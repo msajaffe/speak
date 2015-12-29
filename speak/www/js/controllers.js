@@ -1,35 +1,98 @@
 angular.module('starter.controllers', [])
 
 
-.controller('RecordCtrl', ['$scope', '$timeout', '$ionicPlatform', '$cordovaMedia', function($scope, $timeout, $ionicPlatform, $cordovaMedia) {
+.controller('RecordCtrl', ['$scope', '$timeout', '$ionicPlatform', '$cordovaMedia', 'GUID', '$cordovaFile', '$cordovaFileTransfer', function($scope, $timeout, $ionicPlatform, $cordovaMedia, GUID, $cordovaFile, $cordovaFileTransfer) {
 	var seconds = 0; var minutes = 0; var hours = 0; var t; $scope.textContent = "00:00:00";
+	$scope.recordingNum = 0; //NUMBER OF RECORDINGS IN ONE LECTURE
 	$scope.cordova = new Object();
+	var recordingID = GUID.get()
 	var mediaVar = null;
-	var recordFileName = "recording1.wav";
-
+	$scope.recordFileNames = [];
 	function stop() {
-		if (status == 'recording') {
+		if ($scope.status == 'recording') {
 			mediaVar.stopRecord();
 			log("Recording stopped");
 		}
-		else if (status == 'playing') {
+		else if ($scope.status == 'playing') {
 			mediaVar.stop();
 			log("Play stopped");
 		}
 		else {
 			log("Nothing stopped");
 		}
-		status = 'stopped';
+		$scope.status = 'stopped';
 	}
 	function record() {
 		if (mediaVar != null) {
+			$scope.recordingNum++;
 			mediaVar.release();
 			mediaVar = null;
 		}
+		$scope.recordFileNames.push(recordingID+"-"+$scope.recordingNum+".wav");
 		createMedia(function() {
-			status = "recording";
+			$scope.status = "recording";
 			mediaVar.startRecord();
 		}, onStatusChange);
+	}
+	$scope.playback = function() {
+		if ($scope.status === "recording") stop();
+		createMedia(function(){
+			$scope.status = "playing";
+			/*mediaVar = $cordovaMedia.newMedia($scope.recordFileNames[$scope.recordingNum], function(){
+				log("Media created successfully");
+			}, onError);*/
+		//	for (var i = 0; i < $scope.recordFileNames.length; i++) {} PLAY ALL BEFORE THEN PLAY THIS
+			mediaVar.play();
+		});
+	}
+	function createMedia(onMediaCreated, mediaStatusCallback) {
+		if (typeof mediaStatusCallback == 'undefined') mediaStatusCallback = null;
+		mediaVar = $cordovaMedia.newMedia($scope.recordFileNames[$scope.recordingNum], function(){
+			log("Media created successfully");
+		}, onError, mediaStatusCallback);
+		onMediaCreated();
+	}
+	$scope.clear = function() {
+		$scope.textContent = "00:00:00";
+		seconds = 0; minutes = 0; hours = 0;
+		//DELETE ALL FILES, RESET VARIABLES
+		/*for (var i = 0; i < $scope.recordFileNames.length; i++)
+		$cordovaFile.removeFile(cordova.file.documentsDirectory, $scope.recordFileNames[i])
+		 .then(function (result) {
+			 console.log('Success: deleting audio file' + JSON.stringify(result));
+		 }, function (err) {
+			 console.log('Error: deleting audio file' + JSON.stringify(err));
+		 });*/
+	}
+	$scope.save = function(){
+		//SEND FILES TO SERVER
+		//CREATE NEW ID
+		$cordovaFileTransfer.upload('http://40.76.12.52:8080', $scope.recordFileNames[$scope.recordingNum], {fileName: recordFileNames[$scope.recordingNum]})
+			.then(function(result) {
+				console.log(result)
+				// Success!
+			}, function(err) {
+				console.log(err)
+				// Error
+			}, function (progress) {
+				console.log(progress)
+				// constant progress updates
+		});
+	}
+	function playAudio(url) {
+			// Play the audio file at url
+			var my_media = new Media(url,
+					// success callback
+					function () {
+							console.log("playAudio():Audio Success");
+					},
+					// error callback
+					function (err) {
+							console.log("playAudio():Audio Error: " + err);
+					}
+			);
+			// Play audio
+			my_media.play();
 	}
 	$scope.toggleRecord = function() {
 		if ($scope.recording){
@@ -41,28 +104,6 @@ angular.module('starter.controllers', [])
 		}
 		$scope.recording = !$scope.recording;
 	}
-	$scope.playback = function() {
-		createMedia(function(){
-			status = "playing";
-			mediaVar = $cordovaMedia.newMedia('/sdcard/'+recordFileName, function(){
-				log("Media created successfully");
-			}, onError);
-			mediaVar.play();
-		});
-	}
-	function createMedia(onMediaCreated, mediaStatusCallback) {
-		if (mediaVar != null) {
-			console.log("OKAY");
-			onMediaCreated();
-			return;
-		}
-		if (typeof mediaStatusCallback == 'undefined') mediaStatusCallback = null;
-		mediaVar = $cordovaMedia.newMedia(recordFileName, function(){
-			log("Media created successfully");
-		}, onError, mediaStatusCallback);
-		onMediaCreated();
-	}
-
   function onStatusChange(){}
 	function onSuccess(){}
 	function onError(err) {
@@ -88,10 +129,6 @@ angular.module('starter.controllers', [])
 	}
 	function timer() {
 		t = $timeout(add, 1000);
-	}
-	$scope.clear = function() {
-		$scope.textContent = "00:00:00";
-		seconds = 0; minutes = 0; hours = 0;
 	}
 	$scope.safeApply = function(fn) {
 		var phase = this.$root.$$phase;

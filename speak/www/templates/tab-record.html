@@ -2,7 +2,7 @@
   <ion-content class="padding">
     <div class="row">
       <div class="col">
-        <h1 style="text-align:center;">{{textContent}}</h1>
+        <h1 style="text-align:center;   font-size: 23vw;">{{textContent}}</h1>
       </div>
     </div>
     <div class="row">
@@ -13,8 +13,16 @@
 
     <div class="row">
       <div class="col">
-        <button class="button button-block button-positive icon-left ion-play" ng-click="playback()">Play</button>
+        <button class="button button-block button-light icon-left ion-play"  ng-disabled="recordFileNames == 0" ng-class="{'button-positive': status == 'playing'}" style="border-color: blue;" ng-click="playback()">Play</button>
       </div>
-    </div> 
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="button button-block button-light icon-left ion-archive" ng-click="save()">Save</button>
+      </div>
+      <div class="col">
+        <button class="button button-block button-light icon-left ion-close-round" ng-click="clear()">Delete</button>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
