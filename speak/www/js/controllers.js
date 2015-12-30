@@ -39,11 +39,11 @@ angular.module('starter.controllers', [])
 		createMedia(function(){
 			$scope.status = "playing";
 			/*mediaVar = $cordovaMedia.newMedia($scope.recordFileNames[$scope.recordingNum], function(){
-				log("Media created successfully");
-			}, onError);*/
+			log("Media created successfully");
+		}, onError);*/
 		//	for (var i = 0; i < $scope.recordFileNames.length; i++) {} PLAY ALL BEFORE THEN PLAY THIS
-			mediaVar.play();
-		});
+		mediaVar.play();
+	});
 	}
 	function createMedia(onMediaCreated, mediaStatusCallback) {
 		if (typeof mediaStatusCallback == 'undefined') mediaStatusCallback = null;
@@ -56,43 +56,46 @@ angular.module('starter.controllers', [])
 		$scope.textContent = "00:00:00";
 		seconds = 0; minutes = 0; hours = 0;
 		//DELETE ALL FILES, RESET VARIABLES
-		/*for (var i = 0; i < $scope.recordFileNames.length; i++)
-		$cordovaFile.removeFile(cordova.file.documentsDirectory, $scope.recordFileNames[i])
-		 .then(function (result) {
-			 console.log('Success: deleting audio file' + JSON.stringify(result));
-		 }, function (err) {
-			 console.log('Error: deleting audio file' + JSON.stringify(err));
-		 });*/
+		/*for (var i = 0; i < $scope.recordFileNames.length; i++) {
+			$cordovaFile.removeFile(cordova.file.documentsDirectory, $scope.recordFileNames[i])
+			.then(function (result) {
+				console.log('Success: deleting audio file' + JSON.stringify(result));
+			}, function (err) {
+				console.log('Error: deleting audio file' + JSON.stringify(err));
+			});
+		}*/
 	}
 	$scope.save = function(){
 		//SEND FILES TO SERVER
 		//CREATE NEW ID
-		$cordovaFileTransfer.upload('http://40.76.12.52:8080', $scope.recordFileNames[$scope.recordingNum], {fileName: recordFileNames[$scope.recordingNum]})
-			.then(function(result) {
-				console.log(result)
-				// Success!
-			}, function(err) {
-				console.log(err)
-				// Error
-			}, function (progress) {
-				console.log(progress)
-				// constant progress updates
+		var fileName =  $scope.recordFileNames[$scope.recordingNum].split('.')[0] + ($scope.recordNum + 1) + ".wav";
+		console.log(fileName);
+		$cordovaFileTransfer.upload('http://40.76.12.52:8080', $scope.recordFileNames[$scope.recordingNum], {fileName: fileName})
+		.then(function(result) {
+			console.log(result)
+			// Success!
+		}, function(err) {
+			console.log(err)
+			// Error
+		}, function (progress) {
+			console.log(progress)
+			// constant progress updates
 		});
 	}
 	function playAudio(url) {
-			// Play the audio file at url
-			var my_media = new Media(url,
-					// success callback
-					function () {
-							console.log("playAudio():Audio Success");
-					},
-					// error callback
-					function (err) {
-							console.log("playAudio():Audio Error: " + err);
-					}
-			);
-			// Play audio
-			my_media.play();
+		// Play the audio file at url
+		var my_media = new Media(url,
+			// success callback
+			function () {
+				console.log("playAudio():Audio Success");
+			},
+			// error callback
+			function (err) {
+				console.log("playAudio():Audio Error: " + err);
+			}
+		);
+		// Play audio
+		my_media.play();
 	}
 	$scope.toggleRecord = function() {
 		if ($scope.recording){
@@ -104,7 +107,7 @@ angular.module('starter.controllers', [])
 		}
 		$scope.recording = !$scope.recording;
 	}
-  function onStatusChange(){}
+	function onStatusChange(){}
 	function onSuccess(){}
 	function onError(err) {
 		if (typeof err.message != 'undefined')
