@@ -8,6 +8,13 @@ angular.module('starter.controllers', [])
 	var recordingID = GUID.get()
 	var mediaVar = null;
 	$scope.recordFileNames = [];
+	//PROBELMS CURRENTLY:
+		//1. PRESSING RECORD WHEN PLAYING -> DOESNT STOP PLAYING COMPLETELY. DOESNT RECORD.
+		//2. PRESSING PLAY WHEN PLAYING -> OVERLAP PLAYS
+		//3.
+		// SOLUTION TO THIS: CREATE A STOP FUNCTION TO THE PLAY THAT STOPS ALL AUDIO THAT IS SUPPOSED TO PLAY
+		//3. PRESSING PLAY WHEN RECORDING -> DOESNT STOP TIMER
+		//
 	function stop() {
 		if ($scope.status == 'recording') {
 			mediaVar.stopRecord();
@@ -23,6 +30,7 @@ angular.module('starter.controllers', [])
 		$scope.status = 'stopped';
 	}
 	function record() {
+		if ($scope.status == 'playing') stop();
 		if (mediaVar != null) {
 			$scope.recordingNum++;
 			mediaVar.release();
@@ -35,52 +43,97 @@ angular.module('starter.controllers', [])
 		}, onStatusChange);
 	}
 	$scope.playback = function() {
-		if ($scope.status === "recording") stop();
-		createMedia(function(){
-			$scope.status = "playing";
-			/*mediaVar = $cordovaMedia.newMedia($scope.recordFileNames[$scope.recordingNum], function(){
-			log("Media created successfully");
-		}, onError);*/
-		//	for (var i = 0; i < $scope.recordFileNames.length; i++) {} PLAY ALL BEFORE THEN PLAY THIS
-		mediaVar.play();
-	});
+		stop();
+		function playMedia(index){
+			return createMedia(
+				function(){
+					$scope.status = "playing";
+					mediaVar.play().then(function(index){
+						return function(){
+							console.log(index);
+							//ADD CONDITION HERE THAT WILL STOP PLAYING
+							if (index != $scope.recordingNum) playMedia(index+1);
+							else $scope.status = "stopped";
+						};
+					}(index));
+				},
+				null,
+				index
+			);
+		}
+		playMedia(0);
+		/*for (var i = 0; i < $scope.recordFileNames.length; i++) {
+			playMedia(i);
+		}*/
 	}
-	function createMedia(onMediaCreated, mediaStatusCallback) {
+	function createMedia(onMediaCreated, mediaStatusCallback, index, success) {
+		if (typeof success === 'undefined') success = function(){	log("Media created successfully"); };
 		if (typeof mediaStatusCallback == 'undefined') mediaStatusCallback = null;
-		mediaVar = $cordovaMedia.newMedia($scope.recordFileNames[$scope.recordingNum], function(){
-			log("Media created successfully");
-		}, onError, mediaStatusCallback);
+		if (typeof index === 'undefined') index = $scope.recordingNum;
+		mediaVar = $cordovaMedia.newMedia(cordova.file.externalApplicationStorageDirectory + $scope.recordFileNames[index], success, onError, mediaStatusCallback);
 		onMediaCreated();
 	}
 	$scope.clear = function() {
-		$scope.textContent = "00:00:00";
-		seconds = 0; minutes = 0; hours = 0;
+		stop();
+		var count = 0;
+		$scope.status = "deleting";
 		//DELETE ALL FILES, RESET VARIABLES
-		/*for (var i = 0; i < $scope.recordFileNames.length; i++) {
-			$cordovaFile.removeFile(cordova.file.documentsDirectory, $scope.recordFileNames[i])
+		for (var i = 0; i < $scope.recordFileNames.length; i++) {
+			$cordovaFile.removeFile(cordova.file.externalApplicationStorageDirectory, $scope.recordFileNames[i])
 			.then(function (result) {
 				console.log('Success: deleting audio file' + JSON.stringify(result));
+				count++;
+				if (count === $scope.recordFileNames.length) {
+					$scope.recordFileNames.length = 0;
+					count = 0;
+					$scope.textContent = "00:00:00";
+					seconds = 0; minutes = 0; hours = 0;
+					mediaVar = null;
+					$scope.recordingNum = 0;
+					$scope.status = "stopped";
+				}
 			}, function (err) {
 				console.log('Error: deleting audio file' + JSON.stringify(err));
 			});
-		}*/
+		}
 	}
 	$scope.save = function(){
+		stop();
 		//SEND FILES TO SERVER
 		//CREATE NEW ID
-		var fileName =  $scope.recordFileNames[$scope.recordingNum].split('.')[0] + ($scope.recordNum + 1) + ".wav";
-		console.log(fileName);
-		$cordovaFileTransfer.upload('http://40.76.12.52:8080', $scope.recordFileNames[$scope.recordingNum], {fileName: fileName})
-		.then(function(result) {
-			console.log(result)
-			// Success!
-		}, function(err) {
-			console.log(err)
-			// Error
-		}, function (progress) {
-			console.log(progress)
-			// constant progress updates
-		});
+		var count = 0;
+		$scope.status = "saving";
+		function send(index) {
+			var fileName =  $scope.recordFileNames[index];
+			var options = {fileName: fileName, mimeType: 'audio/wav', params: {lectureid: recordingID, current: index, total: $scope.recordingNum}};
+			console.log(options);
+			$cordovaFileTransfer.upload('http://40.76.12.52:8080', cordova.file.externalApplicationStorageDirectory + fileName, options)
+			.then(function(result) {
+				console.log(result)
+				count++;
+				if (count === $scope.recordFileNames.length) {
+					$scope.status = "stopped";
+				}
+				// Success!
+			}, function(err) {
+				console.log(err)
+				count++;
+				if (count === $scope.recordFileNames.length) {
+					$scope.status = "stopped";
+				}
+				// Error
+			}, function (progress) {
+				console.log(progress)
+				count++;
+				if (count === $scope.recordFileNames.length) {
+					$scope.status = "stopped";
+				}
+				// constant progress updates
+			});
+		}
+		for (var i = 0; i < $scope.recordFileNames.length; i++){
+			send(i);
+		}
 	}
 	function playAudio(url) {
 		// Play the audio file at url
@@ -103,6 +156,7 @@ angular.module('starter.controllers', [])
 			stop();
 		} else {
 			timer();
+			$scope.status = 'recording';
 			record();
 		}
 		$scope.recording = !$scope.recording;
@@ -110,6 +164,7 @@ angular.module('starter.controllers', [])
 	function onStatusChange(){}
 	function onSuccess(){}
 	function onError(err) {
+		console.log(err);
 		if (typeof err.message != 'undefined')
 		err = err.message;
 		alert("Error : " + err);

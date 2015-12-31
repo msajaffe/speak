@@ -7,21 +7,21 @@
     </div>
     <div class="row">
       <div class="col">
-        <button class="button button-block button-light icon-left" ng-class="{'ion-android-microphone': 1, 'button-assertive': recording}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="height: 75px; border-color: rgb(255, 0, 0);">Record</button>
+        <button class="button button-block button-light icon-left" ng-class="{'ion-android-microphone': 1, 'button-assertive': status === 'recording'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="height: 75px; border-color: rgb(255, 0, 0);">Record</button>
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        <button class="button button-block button-light icon-left ion-play"  ng-disabled="recordFileNames == 0" ng-class="{'button-positive': status == 'playing'}" style="border-color: blue;" ng-click="playback()">Play</button>
+        <button class="button button-block button-light icon-left ion-play"  ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-positive': status == 'playing'}" style="border-color: blue;" ng-click="playback()">Play</button>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <button class="button button-block button-light icon-left ion-archive" ng-click="save()">Save</button>
+        <button class="button button-block button-light icon-left ion-archive" ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}" style="border-color: green;">Save</button>
       </div>
       <div class="col">
-        <button class="button button-block button-light icon-left ion-close-round" ng-click="clear()">Delete</button>
+        <button class="button button-block button-light icon-left ion-close-round" ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}" style="border-color: rgb(255, 0, 0);">Delete</button>
       </div>
     </div>
   </ion-content>
