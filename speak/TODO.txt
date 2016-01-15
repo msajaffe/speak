@@ -1,0 +1,25 @@
+TODO
+Higher sampling rate for recordings - DONE (44.1 KHZ)
+FRONTEND
+SCREENS
+  RECORD
+    Fix current recording/playback/save/delete bugs.
+    Add functionality to save button apart from uploading to server. I.e. add classes/lectures
+  CLASSES
+    Get classes from server/cache and display according to drawing
+    Add option to add class
+  CLASS
+    Able to view all notes/(recordings?)
+    Able to record new lecture for this class on this screen.
+
+BACKEND
+Migrate to node server
+  Accept audio files
+  White noise suppression on server side acceptance of audio file.
+  Send progress of transcribing and summarizing, push notification when final text is finished.
+  Upload final text to google docs api
+
+
+IDEA
+have the audio transcribed directly on device, user is able to view the transcribed audio, and select the words that are incorrect.
+if there is too much inconsistency between transcribed audio and actual lecture, then instruct user to move to a better seat?
