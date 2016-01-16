@@ -105,9 +105,9 @@ $scope.save = function(){
 	$scope.status = "saving";
 	function send(index) {
 		var fileName =  $scope.recordFileNames[index];
-		var options = {fileName: fileName, mimeType: 'audio/mp4', params: {lectureid: recordingID, current: index, total: $scope.recordingNum}};
+		var options = {fileKey: "files", fileName: fileName, mimeType: 'audio/mp4', params: {lectureid: recordingID, current: index, total: $scope.recordingNum}, httpMethod: "POST"};
 		console.log(options);
-		$cordovaFileTransfer.upload('http://40.76.12.52:8080', cordova.file.externalApplicationStorageDirectory + fileName, options)
+		$cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', cordova.file.externalApplicationStorageDirectory + fileName, options)
 		.then(function(result) {
 			console.log(result)
 			count++;
