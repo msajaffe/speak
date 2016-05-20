@@ -8,6 +8,22 @@ angular.module('starter.controllers', [])
 	var recordingID = GUID.get()
 	var mediaVar = null;
 	$scope.recordFileNames = [];
+	var fs = null;
+	//
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	// device APIs are available
+	//
+	function onDeviceReady() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, null);
+	}
+
+	function gotFS(fileSystem) {
+		console.log(fileSystem.name);
+		console.log(fileSystem.root.name);
+		fs = fileSystem;
+	}
+
 	//PROBELMS CURRENTLY:
 	//1. PRESSING RECORD WHEN PLAYING -> DOESNT STOP PLAYING COMPLETELY. DOESNT RECORD.
 	//2. PRESSING PLAY WHEN PLAYING -> OVERLAP PLAYS
@@ -30,7 +46,10 @@ angular.module('starter.controllers', [])
 		$scope.status = 'stopped';
 	}
 	function record() {
-		if ($scope.status == 'playing') stop();
+		if ($scope.status == 'playing') {
+			stop();
+			return;
+		}
 		if (mediaVar != null) {
 			$scope.recordingNum++;
 			mediaVar.release();
@@ -70,7 +89,7 @@ function createMedia(onMediaCreated, mediaStatusCallback, index, success) {
 	if (typeof success === 'undefined') success = function(){	log("Media created successfully"); };
 	if (typeof mediaStatusCallback == 'undefined') mediaStatusCallback = null;
 	if (typeof index === 'undefined') index = $scope.recordingNum;
-	mediaVar = $cordovaMedia.newMedia(cordova.file.externalApplicationStorageDirectory + $scope.recordFileNames[index], success, onError, mediaStatusCallback);
+	mediaVar = $cordovaMedia.newMedia(cordova + $scope.recordFileNames[index], success, onError, mediaStatusCallback);
 	onMediaCreated();
 }
 $scope.clear = function() {
@@ -79,7 +98,7 @@ $scope.clear = function() {
 	$scope.status = "deleting";
 	//DELETE ALL FILES, RESET VARIABLES
 	for (var i = 0; i < $scope.recordFileNames.length; i++) {
-		$cordovaFile.removeFile(cordova.file.externalApplicationStorageDirectory, $scope.recordFileNames[i])
+		$cordovaFile.removeFile(fs.root.name, $scope.recordFileNames[i])
 		.then(function (result) {
 			console.log('Success: deleting audio file' + JSON.stringify(result));
 			count++;
@@ -107,7 +126,7 @@ $scope.save = function(){
 		var fileName =  $scope.recordFileNames[index];
 		var options = {fileKey: "files", fileName: fileName, mimeType: 'audio/mp4', params: {lectureid: recordingID, current: index, total: $scope.recordingNum}, httpMethod: "POST"};
 		console.log(options);
-		$cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', cordova.file.externalApplicationStorageDirectory + fileName, options)
+		$cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', fs.root.name + fileName, options)
 		.then(function(result) {
 			console.log(result)
 			count++;
