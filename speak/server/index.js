@@ -2,12 +2,10 @@
 
 var watson = require('watson-developer-cloud');
 var fs = require('fs-extra');
-var express = require('express');
-var multer = require('multer');
 
 var speech_to_text = watson.speech_to_text({
-  username: 'a368d1f4-6a55-4d9a-b848-707c5d078ca1',
-  password: 'lFGo0nKzWNPr',
+  username: 'ceef8700-b4f7-4e9d-9b45-7ba7efe5f658',
+  password: 'J0hM2Y0MAhfU',
   version: 'v1',
   url: 'https://stream.watsonplatform.net/speech-to-text/api'
 });
@@ -35,15 +33,37 @@ recognizeStream.setEncoding('utf8'); // to get strings instead of Buffers from `
   recognizeStream.on(eventName, console.log.bind(console, eventName + ' event: '));
 });
 
+var express = require('express');
+var fileUpload = require('express-fileupload');
 var app = express();
-var upload = multer({ dest: './uploads' });
 
-app.get('/', function(req, res){
-  res.send('hello world');
-});
+// default options
+app.use(fileUpload());
 
 app.post('/upload', function(req, res) {
-    console.log(req.files);
-});
 
-app.listen(3030);
+	if (!req.files) {
+		res.send('No files were uploaded.');
+		return;
+	}
+  console.log(req.files);
+	var file = req.files.fileUpload;
+//  console.log(file.mv.toString());
+  var uploadPath = __dirname + '/uploads/' + file.name;
+  console.log(uploadPath);
+	file.mv(uploadPath, function(err) {
+		if (err) {
+      console.log(err)
+			res.status(500).send(err);
+		}
+		else {
+			res.send('File uploaded!');
+      // pipe in some audio
+      fs.createReadStream(uploadPath).pipe(recognizeStream);
+
+      // and pipe out the transcription
+      recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+		}
+	});
+});
+app.listen(3000);

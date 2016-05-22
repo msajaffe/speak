@@ -6,7 +6,9 @@ angular.module('starter.controllers', [])
 	$scope.recordingNum = 0; //NUMBER OF RECORDINGS IN ONE LECTURE
 	$scope.cordova = new Object();
 	var recordingID = GUID.get()
+	console.log(recordingID);
 	var mediaVar = null;
+	var savePath;
 	$scope.recordFileNames = [];
 	var fs = null;
 	//
@@ -22,6 +24,7 @@ angular.module('starter.controllers', [])
 		console.log(fileSystem.name);
 		console.log(fileSystem.root.name);
 		fs = fileSystem;
+		savePath = fs.root.name + "/Download/";
 	}
 
 	//PROBELMS CURRENTLY:
@@ -98,7 +101,7 @@ $scope.clear = function() {
 	$scope.status = "deleting";
 	//DELETE ALL FILES, RESET VARIABLES
 	for (var i = 0; i < $scope.recordFileNames.length; i++) {
-		$cordovaFile.removeFile(fs.root.name, $scope.recordFileNames[i])
+		$cordovaFile.removeFile(savePath, $scope.recordFileNames[i])
 		.then(function (result) {
 			console.log('Success: deleting audio file' + JSON.stringify(result));
 			count++;
@@ -126,7 +129,7 @@ $scope.save = function(){
 		var fileName =  $scope.recordFileNames[index];
 		var options = {fileKey: "files", fileName: fileName, mimeType: 'audio/mp4', params: {lectureid: recordingID, current: index, total: $scope.recordingNum}, httpMethod: "POST"};
 		console.log(options);
-		$cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', fs.root.name + fileName, options)
+		$cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', savePath + fileName, options)
 		.then(function(result) {
 			console.log(result)
 			count++;

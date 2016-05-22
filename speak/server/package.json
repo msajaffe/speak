@@ -10,6 +10,6 @@
     "http": "latest",
     "connect": "latest",
     "express": "latest",
-    "multer": "latest"
+    "express-fileupload": "latest"
   }
 }
