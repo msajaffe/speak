@@ -1,0 +1,10 @@
+<ion-view view-title="Classes">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="item in files">
+                <span>part {{item}}</span>
+                <i ng-class="{ 'ion-play': !play,'ion-pause': play}" style="float:right;font-size:20px;" ng-click='play=!play;'></i>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
