@@ -363,8 +363,18 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('welcomeCtrl', function($scope, $state) {
-    $scope.go2Record = function() {
-        $state.go('tab.record');
-    }
+.controller('welcomeCtrl', function($scope, $state, navigationFactory) {
+    $scope.go2 = navigationFactory.go2;
+})
+
+.controller('NotesCtrl', function($scope, $state, navigationFactory) {
+    $scope.go2 = navigationFactory.go2;
+})
+
+.controller('ThemesCtrl', function($scope, $state, navigationFactory) {
+    $scope.go2 = navigationFactory.go2;
+})
+
+.controller('SettingsCtrl', function($scope, $state, navigationFactory) {
+    $scope.go2 = navigationFactory.go2;
 })
