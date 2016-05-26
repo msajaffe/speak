@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
                     text: $scope.textContent
                 });
             }, 1000)
-			*/
+            */
         }
     }, false);
 
@@ -121,8 +121,8 @@ angular.module('starter.controllers', [])
         }
         playMedia(0);
         /*for (var i = 0; i < $scope.recordFileNames.length; i++) {
-		playMedia(i);
-	}*/
+        playMedia(i);
+    }*/
     }
 
     function createMedia(onMediaCreated, mediaStatusCallback, index, success) {
@@ -274,11 +274,12 @@ angular.module('starter.controllers', [])
     });
 }])
 
-.controller('ClassesDetailsCtrl', function($scope) {
+.controller('ClassesDetailsCtrl', function($scope, details) {
     $scope.files = [1, 2, 3, 4, 5, 6, 7];
+    $scope.details = details;
 })
 
-.controller('ClassesListCtrl', function($scope, $ionicPlatform, $timeout, $state) {
+.controller('ClassesListCtrl', function($scope, $ionicPlatform, $timeout, $state, dataFactory) {
     // All this stuf fis from speech recognition, we will not need it
     /*
     $scope.recognition = undefined;
@@ -326,30 +327,12 @@ angular.module('starter.controllers', [])
             }
         };
     })
-	*/
+    */
     /*********************************************/
 
-    $scope.classes = [{
-        class: 'ECE251',
-        start_time: new Date().getTime(),
-        end_time: new Date().getTime(),
-        file: 'link-251'
-    }, {
-        class: 'ECE151',
-        start_time: new Date().getTime(),
-        end_time: new Date().getTime(),
-        file: 'link-151'
-    }, {
-        class: 'ECE351',
-        start_time: new Date().getTime(),
-        end_time: new Date().getTime(),
-        file: 'link-351'
-    }, {
-        class: 'ECE451',
-        start_time: new Date().getTime(),
-        end_time: new Date().getTime(),
-        file: 'link-451'
-    }]
+    $scope.classes = dataFactory.classes;
+
+
 
     $scope.go2Details = function(index) {
         $state.go('tab.classes-details', { index: index })

@@ -44,3 +44,30 @@ angular.module('starter.services', [])
 
     return service;
 })
+
+.factory('dataFactory', function() {
+
+    var service = {};
+
+    service.classes = [{
+        class: 'ECE251',
+        id: 1,
+        start_time: new Date().getTime(),
+        end_time: new Date().getTime(),
+        file: 'link-251'
+    }, {
+        class: 'ECE151',
+        id: 2,
+        start_time: new Date().getTime(),
+        end_time: new Date().getTime(),
+        file: 'link-151'
+    }, {
+        class: 'ECE351',
+        id: 3,
+        start_time: new Date().getTime(),
+        end_time: new Date().getTime(),
+        file: 'link-351'
+    }]
+
+    return service;
+})

@@ -79,7 +79,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         views: {
             'tab-classes': {
                 templateUrl: 'templates/tab-classes-details.html',
-                controller: 'ClassesDetailsCtrl'
+                controller: 'ClassesDetailsCtrl',
+                resolve: {
+                    details: function($stateParams, dataFactory) {
+                        var id = $stateParams.index;
+                        return dataFactory.classes[id];
+                    }
+                }
             }
         }
     })
