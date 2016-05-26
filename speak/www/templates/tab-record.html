@@ -1,27 +1,31 @@
-<ion-view view-title="Record">
-  <ion-content class="padding">
+<ion-view view-title="Record" class="record-section">
+  <ion-content class="padding" >
+      <br><br><br>
     <div class="row">
       <div class="col">
-        <h1 style="text-align:center;   font-size: 23vw;">{{textContent}}</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button class="button button-block button-light icon-left" ng-class="{'ion-android-microphone': 1, 'button-assertive': status === 'recording'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="height: 75px; border-color: rgb(255, 0, 0);">Record</button>
-      </div>
-    </div>
+          <button class="button button-block button-light icon-left record-bubble" ng-class="{'button-assertive': status === 'recording'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="border-color: rgb(255, 0, 0);">
+            <div class="ion-android-microphone" style="text-align:center;"></div>
+            <h1 style="text-align:center;   font-size: 15vhvw;" class="record-time">{{textContent}}</h1>
+          </button>
 
-    <div class="row">
-      <div class="col">
-        <button class="button button-block button-light icon-left ion-play"  ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-positive': status == 'playing'}" style="border-color: blue;" ng-click="playback()">Play</button>
       </div>
     </div>
-    <div class="row">
+ <!--   <div class="row">
       <div class="col">
-        <button class="button button-block button-light icon-left ion-archive" ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}" style="border-color: green;">Save</button>
+        <button class="button button-block button-light icon-left btn-record" ng-class="{'ion-android-microphone': 1, 'button-assertive': status === 'recording'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="height: 75px; border-color: rgb(255, 0, 0);">Record</button>
+      </div>
+    -->
+    <div class="col text-center">
+        <button class="button button-clear button-positive icon-left ion-play btn-play"  ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-positive': status == 'playing'}" style="" ng-click="playback()">Play</button>
+      </div>
+    </div>
+      <br><br>
+    <div class="row row-bottom record-file">
+      <div class="col">
+        <button class="button button-block button-light " ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}" ><div class="ion-archive"></div>Save</button>
       </div>
       <div class="col">
-        <button class="button button-block button-light icon-left ion-close-round" ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}" style="border-color: rgb(255, 0, 0);">Delete</button>
+        <button class="button button-block button-light" ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}" ><div class="ion-trash-b"></div>Delete</button>
       </div>
     </div>
   </ion-content>

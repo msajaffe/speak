@@ -1,0 +1,52 @@
+$texttheme: #444444;
+$basetheme:#387EF5;
+@mixin squarebtn($size){
+    height:$size; width:$size;
+}
+@mixin roundbtn($size){
+    border-radius: 50%;
+    width:$size !important;
+    height:$size !important;
+}
+@mixin center-hor(){
+    position: relative;
+    margin-left: auto; margin-right: auto;
+}
+
+.record-bubble{
+    @include center-hor();
+    @include roundbtn(14em);
+    text-align: center;
+
+    .ion-android-microphone{
+        font-size: 3em;
+    }
+   h1{
+        color:$texttheme;
+    }
+}
+
+.record-file{
+    .button{
+        width:50%;
+        @include center-hor();
+    }
+    .ion-archive,
+    .ion-trash-b{
+        font-size: 3em;
+
+    }
+}
+
+
+.toggle-small{
+    input:checked + .track{
+        background-color: lighten($basetheme,20%);
+
+
+        .handle{
+            background-color: $basetheme;
+        }
+    }
+
+}

@@ -1,1 +1,28 @@
-/* Empty. Add your own CSS if you like */
+.record-bubble {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  width: 14em !important;
+  height: 14em !important;
+  text-align: center; }
+  .record-bubble .ion-android-microphone {
+    font-size: 3em; }
+  .record-bubble h1 {
+    color: #444444; }
+
+.record-file .button {
+  width: 50%;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto; }
+.record-file .ion-archive,
+.record-file .ion-trash-b {
+  font-size: 3em; }
+
+.toggle-small input:checked + .track {
+  background-color: #99bdfa; }
+  .toggle-small input:checked + .track .handle {
+    background-color: #387EF5; }
+
+/*# sourceMappingURL=style.css.map */
