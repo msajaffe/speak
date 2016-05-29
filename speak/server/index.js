@@ -47,7 +47,7 @@ app.post('/upload', function(req, res) {
 		return;
 	}
   console.log(req.files);
-	var file = req.files.fileUpload;
+	var file = req.files.files;
 //  console.log(file.mv.toString());
   var uploadPath = __dirname + '/uploads/' + file.name;
   console.log(uploadPath);
@@ -60,9 +60,9 @@ app.post('/upload', function(req, res) {
 			res.send('File uploaded!');
       // pipe in some audio
       fs.createReadStream(uploadPath).pipe(recognizeStream);
-
+      recognizeStream = speech_to_text.createRecognizeStream(params);
       // and pipe out the transcription
-      recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+    //  recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
 		}
 	});
 });
