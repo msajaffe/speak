@@ -1,8 +1,25 @@
 <ion-view view-title="Welcome">
     <ion-content class="padding">
         <div class="row">
-            <div class="col">
-                <button class="button button-block" style="border-color: blue;" ng-click="go2Record()">Record</button>
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(0)">Record</button>
+            </div>
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(1)">Audio</button>
+            </div>
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(2)">Notes</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(3)">Themes</button>
+            </div>
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(4)">Accounts</button>
+            </div>
+            <div class="col-33">
+                <button class="button button-block" ng-click="go2(5)">Settings</button>
             </div>
         </div>
     </ion-content>
