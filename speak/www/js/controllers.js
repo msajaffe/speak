@@ -169,7 +169,7 @@ angular.module('starter.controllers', [])
             var fileName = $scope.recordFileNames[index];
             var options = { fileKey: "files", fileName: fileName, mimeType: 'audio/mp4', params: { lectureid: recordingID, current: index, total: $scope.recordingNum }, httpMethod: "POST" };
             console.log(options);
-            $cordovaFileTransfer.upload('http://192.168.2.10:3030/upload', savePath + fileName, options)
+            $cordovaFileTransfer.upload('http://129.97.124.198:3030/upload', savePath + fileName, options)
                 .then(function(result) {
                     console.log(result)
                     count++;
@@ -340,24 +340,24 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AccountCtrl', function($scope) {
-    $scope.settings = {
-        enableFriends: true
-    };
+.controller('AccountCtrl', function($scope, $state) {
+    $scope.go2Settings = function() {
+        $state.go('tab.account-settings');
+    }
+
+    $scope.go2FileStorage = function() {
+        $state.go('tab.account-storage');
+    }
 })
 
 .controller('welcomeCtrl', function($scope, $state, navigationFactory) {
     $scope.go2 = navigationFactory.go2;
 })
 
-.controller('NotesCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
+.controller('AccountSettingsCtrl', function() {
+
 })
 
-.controller('ThemesCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
-})
+.controller('AccountStorageCtrl', function() {
 
-.controller('SettingsCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
 })
