@@ -66,5 +66,30 @@ app.post('/upload', function(req, res) {
             recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
         }
     });
+    /*
+      if (!req.files) {
+        res.send('No files were uploaded.');
+        return;
+      }
+      console.log(req.files);
+      var file = req.files.files;
+    //  console.log(file.mv.toString());
+      var uploadPath = __dirname + '/uploads/' + file.name;
+      console.log(uploadPath);
+      file.mv(uploadPath, function(err) {
+        if (err) {
+          console.log(err)
+          res.status(500).send(err);
+        }
+        else {
+          res.send('File uploaded!');
+          // pipe in some audio
+          fs.createReadStream(uploadPath).pipe(recognizeStream);
+          recognizeStream = speech_to_text.createRecognizeStream(params);
+          // and pipe out the transcription
+        //  recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+        }
+      });
+    */
 });
 app.listen(3000);
