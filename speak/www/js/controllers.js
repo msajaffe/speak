@@ -100,7 +100,10 @@ angular.module('starter.controllers', [])
         $scope.status = "DELETING";
         //DELETE ALL FILES, RESET VARIABLES
         for (var i = 0; i < $scope.recordFileNames.length; i++) {
-            $cordovaFile.removeFile($scope.recordFileNames[i].fileURL)
+            var fileDir = $scope.recordFileNames[i].fileURL.split(recordingID)[0];
+            console.log(fileDir);
+            console.log($scope.recordFileNames[i].fileName);
+            $cordovaFile.removeFile(fileDir, $scope.recordFileNames[i].fileName)
                 .then(function(result) {
                     console.log('Success: deleting audio file' + JSON.stringify(result));
                     count++;
@@ -128,9 +131,9 @@ angular.module('starter.controllers', [])
         $scope.status = "SAVING";
 
         function send(index) {
-            var options = { fileKey: "files", fileName: $scope.recordFileNames[index].fileName, mimeType: 'audio/mav', params: { lectureid: recordingID, current: index, total: $scope.recordingNum }, httpMethod: "POST" };
+            var options = { fileKey: "files", fileName: $scope.recordFileNames[index].fileName, mimeType: 'audio/wav', params: { lectureid: recordingID, current: index, total: $scope.recordingNum }, httpMethod: "POST" };
             console.log(options);
-            $cordovaFileTransfer.upload('http://172.16.97.142:3000/upload', $scope.recordFileNames[index].fileURL, options)
+            $cordovaFileTransfer.upload('https://boiling-inlet-4790.herokuapp.com/upload', $scope.recordFileNames[index].fileURL, options)
                 .then(function(result) {
                     console.log(result)
                     count++;

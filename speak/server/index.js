@@ -16,7 +16,15 @@ var params = {
 
 // create the stream
 var recognizeStream = speech_to_text.createRecognizeStream(params);
+/*recognizer.onresult = function(data) {
 
+    //get the transcript from the service result data
+    var result = data.results[data.results.length-1];
+    var transcript = result.alternatives[0].transcript;
+
+    // do something with the transcript
+    search( transcript, result.final );
+}*/
 // pipe in some audio
 //fs.createReadStream(__dirname + '/resources/61d3bc24-ca61-af70-39cd-145a6a9302c3-0.wav').pipe(recognizeStream);
 
@@ -41,14 +49,12 @@ var app = express();
 app.use(fileUpload());
 
 app.post('/upload', function(req, res) {
-
 	if (!req.files) {
 		res.send('No files were uploaded.');
 		return;
 	}
-  console.log(req.files);
 	var file = req.files.files;
-//  console.log(file.mv.toString());
+//  console.log(file);
   var uploadPath = __dirname + '/uploads/' + file.name;
   console.log(uploadPath);
 	file.mv(uploadPath, function(err) {
@@ -57,13 +63,15 @@ app.post('/upload', function(req, res) {
 			res.status(500).send(err);
 		}
 		else {
-			res.send('File uploaded!');
-      // pipe in some audio
-      fs.createReadStream(uploadPath).pipe(recognizeStream);
-      recognizeStream = speech_to_text.createRecognizeStream(params);
-      // and pipe out the transcription
-    //  recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+    // use Watson to generate a text transcript from the audio stream
+    var audio = fs.createReadStream(uploadPath);
+     speech_to_text.recognize({audio: audio, content_type: 'audio/wav; rate=44100'}, function(err, transcript) {
+         if (err)
+             return res.status(500).json({ error: err });
+         else
+             return res.json(transcript);
+     });
 		}
 	});
 });
-app.listen(3000);
+app.listen(process.env.PORT || 8000);
