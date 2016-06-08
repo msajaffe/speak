@@ -9,91 +9,94 @@ angular.module('starter.controllers', [])
     $scope.textContent = "00:00:00";
     $scope.recordingNum = -1; //NUMBER OF RECORDINGS IN ONE LECTURE
     $scope.cordova = new Object();
-		$scope.recordFileNames = [];
+    $scope.recordFileNames = [];
     var recordingID = GUID.get()
-		var recorder;
+    var recorder;
     var mediaVar = null;
     var savePath;
     var fs = null;
 
-		// status callback
-		function audioRecordCallback() {
-			return function (mediaStatus, error) {
-				if (martinescu.Recorder.STATUS_ERROR == mediaStatus) {
-					console.log(error);
-				}
-        $scope.status = mediaStatus
-				console.log(mediaStatus);
-			};
-		}
+    // status callback
+    function audioRecordCallback() {
+        return function(mediaStatus, error) {
+            if (martinescu.Recorder.STATUS_ERROR == mediaStatus) {
+                console.log(error);
+            }
+            $scope.status = mediaStatus
+            console.log(mediaStatus);
+        };
+    }
 
-		// buffer callback
-		var bufferCallback = function (buffer) {
-			//  console.log(buffer);
-		}
-		$scope.toggleRecord = function() {
-			if ($scope.recording) {
-				$timeout.cancel(t);
-				recorder.stop();
-				recorder.release();
-        $scope.status = "STOPPED";
-			} else {
-					var fileName = recordingID + '-' + $scope.recordingNum  + ".wav";
-					$scope.recordingNum++;
-					createRecordFile(fileName, function(){
-						$timeout(function () {
-							timer();
-							recorder.record();
-						}, 200);
-					});
-			}
-			$scope.recording = !$scope.recording;
-		}
+    // buffer callback
+    var bufferCallback = function(buffer) {
+        //  console.log(buffer);
+    }
+    $scope.toggleRecord = function() {
+        if ($scope.recording) {
+            $timeout.cancel(t);
+            recorder.stop();
+            recorder.release();
+            $scope.status = "STOPPED";
+        } else {
+            var fileName = recordingID + '-' + $scope.recordingNum + ".wav";
+            $scope.recordingNum++;
+            createRecordFile(fileName, function() {
+                $timeout(function() {
+                    timer();
+                    recorder.record();
+                }, 200);
+            });
+        }
+        $scope.recording = !$scope.recording;
+    }
 
-		$scope.playback = function() {
-			/* stop();*/
-			function playMedia(index) {
-				playAudio($scope.recordFileNames[index].fileURL,
-					function(index) {
-						return function() {
-							console.log(index);
-							//ADD CONDITION HERE THAT WILL STOP PLAYING
-							console.log($scope.recordFileNames[index].fileURL)
-							if (index != $scope.recordingNum) playMedia(index + 1);
-							else $scope.status = "STOPPED";
-						};
-					}(index), function(error){
-						console.log(error);
-					});
-				}
-				playMedia(0);
-			}
+    $scope.playback = function() {
+        /* stop();*/
+        function playMedia(index) {
+            playAudio($scope.recordFileNames[index].fileURL,
+                function(index) {
+                    return function() {
+                        console.log(index);
+                        //ADD CONDITION HERE THAT WILL STOP PLAYING
+                        console.log($scope.recordFileNames[index].fileURL)
+                        if (index != $scope.recordingNum) playMedia(index + 1);
+                        else $scope.status = "STOPPED";
+                    };
+                }(index),
+                function(error) {
+                    console.log(error);
+                });
+        }
+        playMedia(0);
+    }
 
-		function createRecordFile(fileName, callback) {
-			var type = window.PERSISTENT;
-			var size = 5*1024*1024;
-			window.requestFileSystem(type, size, createFileHelper(fileName), errorCallback)
-			function createFileHelper(fileName) {
-				return function successCallback(fs) {
-					//savePath = fs.root.name;
-					fs.root.getFile(fileName, {create: true, exclusive: true}, function(fileEntry) {
-						console.log(fileEntry)
-						console.log('File creation successfull!')
-						var fileURL = "/" +fileEntry.nativeURL.split('///')[1];
-						$scope.recordFileNames.push({fileName: fileName, fileURL: fileURL});
-						console.log(fileEntry.nativeURL.split('///')[1]);
-						recorder = new martinescu.Recorder(fileURL, { sampleRate: 44100 }, audioRecordCallback(), bufferCallback);
-						if (typeof callback === 'function') {
-							callback();
-						}
-					}, errorCallback);
-				};
-			}
-			function errorCallback(error) {
-				console.log(error);
-				alert("ERROR: " + error.code)
-			}
-		}
+    function createRecordFile(fileName, callback) {
+        var type = window.PERSISTENT;
+        var size = 5 * 1024 * 1024;
+        window.requestFileSystem(type, size, createFileHelper(fileName), errorCallback)
+
+        function createFileHelper(fileName) {
+            return function successCallback(fs) {
+                //savePath = fs.root.name;
+                fs.root.getFile(fileName, { create: true, exclusive: true }, function(fileEntry) {
+                    console.log(fileEntry)
+                    console.log('File creation successfull!')
+                    var fileURL = "/" + fileEntry.nativeURL.split('///')[1];
+                    $scope.recordFileNames.push({ fileName: fileName, fileURL: fileURL });
+                    console.log(fileEntry.nativeURL.split('///')[1]);
+                    recorder = new martinescu.Recorder(fileURL, { sampleRate: 44100 }, audioRecordCallback(), bufferCallback);
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                }, errorCallback);
+            };
+        }
+
+        function errorCallback(error) {
+            console.log(error);
+            alert("ERROR: " + error.code)
+        }
+    }
 
     $scope.clear = function() {
         var count = 0;
@@ -135,7 +138,7 @@ angular.module('starter.controllers', [])
             console.log(options);
             $cordovaFileTransfer.upload('https://boiling-inlet-4790.herokuapp.com/upload', $scope.recordFileNames[index].fileURL, options)
                 .then(function(result) {
-                    console.log(result)
+                    alert(JSON.stringify(result));
                     count++;
                     if (count === $scope.recordFileNames.length) {
                         $scope.status = "STOPPED";
@@ -150,7 +153,7 @@ angular.module('starter.controllers', [])
                     // Error
                 }, function(progress) {
                     console.log(progress)
-                    // constant progress updates
+                        // constant progress updates
                 });
         }
         for (var i = 0; i < $scope.recordFileNames.length; i++) {
@@ -161,15 +164,15 @@ angular.module('starter.controllers', [])
     function playAudio(url, successCallback, errorCallback) {
         // Play the audio file at url
         var my_media = new Media(url,
-					successCallback,
-					errorCallback
+            successCallback,
+            errorCallback
         );
         // Play audio
         my_media.play();
     }
 
     document.addEventListener('deviceready', function() {
-				// Android customization
+        // Android customization
         cordova.plugins.backgroundMode.setDefaults({
             title: 'Speak it up!',
             text: 'Doing heavy tasks.'
@@ -194,7 +197,7 @@ angular.module('starter.controllers', [])
                     text: $scope.textContent
                 });
             }, 1000)
-			*/
+            */
         }
     }, false);
 
@@ -313,24 +316,24 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AccountCtrl', function($scope) {
-    $scope.settings = {
-        enableFriends: true
-    };
+.controller('AccountCtrl', function($scope, $state) {
+    $scope.go2Settings = function() {
+        $state.go('tab.account-settings');
+    }
+
+    $scope.go2FileStorage = function() {
+        $state.go('tab.account-storage');
+    }
 })
 
 .controller('welcomeCtrl', function($scope, $state, navigationFactory) {
     $scope.go2 = navigationFactory.go2;
 })
 
-.controller('NotesCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
+.controller('AccountSettingsCtrl', function() {
+
 })
 
-.controller('ThemesCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
-})
+.controller('AccountStorageCtrl', function() {
 
-.controller('SettingsCtrl', function($scope, $state, navigationFactory) {
-    $scope.go2 = navigationFactory.go2;
 })

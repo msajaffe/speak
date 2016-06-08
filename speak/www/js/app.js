@@ -101,35 +101,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
 
-    .state('tab.themes', {
-        url: '/themes',
+    .state('tab.account-settings', {
+        url: '/account-settings',
         views: {
-            'tab-themes': {
-                templateUrl: 'templates/tab-themes.html',
-                controller: 'ThemesCtrl'
+            'tab-account': {
+                templateUrl: 'templates/account-settings.html',
+                controller: 'AccountSettingsCtrl'
             }
         }
     })
 
-    .state('tab.settings', {
-        url: '/settings',
+    .state('tab.account-storage', {
+        url: '/account-storage',
         views: {
-            'tab-settings': {
-                templateUrl: 'templates/tab-settings.html',
-                controller: 'SettingsCtrl'
+            'tab-account': {
+                templateUrl: 'templates/account-storage.html',
+                controller: 'AccountStorageCtrl'
             }
         }
     })
 
-    .state('tab.notes', {
-        url: '/notes',
-        views: {
-            'tab-notes': {
-                templateUrl: 'templates/tab-notes.html',
-                controller: 'NotesCtrl'
-            }
-        }
-    })
 
 
 

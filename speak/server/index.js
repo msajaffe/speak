@@ -4,14 +4,14 @@ var watson = require('watson-developer-cloud');
 var fs = require('fs-extra');
 
 var speech_to_text = watson.speech_to_text({
-  username: 'ceef8700-b4f7-4e9d-9b45-7ba7efe5f658',
-  password: 'J0hM2Y0MAhfU',
-  version: 'v1',
-  url: 'https://stream.watsonplatform.net/speech-to-text/api'
+    username: 'ceef8700-b4f7-4e9d-9b45-7ba7efe5f658',
+    password: 'J0hM2Y0MAhfU',
+    version: 'v1',
+    url: 'https://stream.watsonplatform.net/speech-to-text/api'
 });
 
 var params = {
-  content_type: 'audio/wav'
+    content_type: 'audio/wav'
 };
 
 // create the stream
@@ -38,7 +38,7 @@ var recognizeStream = speech_to_text.createRecognizeStream(params);
 recognizeStream.setEncoding('utf8'); // to get strings instead of Buffers from `data` events
 
 ['data', 'results', 'error', 'connection-close'].forEach(function(eventName) {
-  recognizeStream.on(eventName, console.log.bind(console, eventName + ' event: '));
+    recognizeStream.on(eventName, console.log.bind(console, eventName + ' event: '));
 });
 
 var express = require('express');
@@ -66,6 +66,7 @@ app.post('/upload', function(req, res) {
     // use Watson to generate a text transcript from the audio stream
     var audio = fs.createReadStream(uploadPath);
      speech_to_text.recognize({audio: audio, content_type: 'audio/wav; rate=44100'}, function(err, transcript) {
+       console.log(JSON.stringify(transcript));
          if (err)
              return res.status(500).json({ error: err });
          else
