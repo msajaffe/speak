@@ -63,6 +63,7 @@ app.post('/upload', function(req, res) {
 			res.status(500).send(err);
 		}
 		else {
+    //SOUND MANIPULATION HERE
     // use Watson to generate a text transcript from the audio stream
     var audio = fs.createReadStream(uploadPath);
      speech_to_text.recognize({audio: audio, content_type: 'audio/wav; rate=44100'}, function(err, transcript) {
