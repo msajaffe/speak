@@ -1,34 +1,17 @@
 <ion-view view-title="Classes">
     <ion-content>
-        <!-- 
-    <span>{{finalSpan}}</span>
-    <span style="color:grey">{{interimSpan}}</span>
-    <button ng-click="toggleStartStop()" ng-show="loaded">{{buttonHTML}}</button>
-   -->
-        <!-- 
-        <ion-list ng-controller="MyCtrl" show-delete="shouldShowDelete" show-reorder="shouldShowReorder" can-swipe="listCanSwipe">
-            <ion-item ng-repeat="item in items" class="item-thumbnail-left">
-                <img ng-src="{{item.img}}">
-                <h2>{{item.title}}</h2>
-                <p>{{item.description}}</p>
-                <ion-option-button class="button-positive" ng-click="share(item)">
-                    Share
+        <p>{{message}}</p>
+        <div class="row">
+            <input type="text" placeholder="class name" class="col-80" ng-model='name'>
+            <button class="button col-20" ng-click='AddClass(name);name=""'>Add</button>
+        </div>
+        <ion-list>
+            <ion-item ng-repeat="item in $storage" ng-click='go2Details($index) '>
+                <h2>{{item.class}}</h2>
+                <ion-option-button class="button-positive" ng-click="$storage.splice($index, 1)">
+                    Delete
                 </ion-option-button>
-                <ion-option-button class="button-info" ng-click="edit(item)">
-                    Edit
-                </ion-option-button>
-                <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)">
-                </ion-delete-button>
-                <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)">
-                </ion-reorder-button>
             </ion-item>
         </ion-list>
-    -->
-        <div ng-repeat-start='rows in [1,2,3]' class="row" style="padding: 0;">
-            <div class='col-33 text-center box-class' ng-repeat="item in classes" ng-click='go2Details($index)'>
-                {{item.class}}
-            </div>
-        </div>
-        <div ng-repeat-end></div>
     </ion-content>
 </ion-view>

@@ -1,7 +1,13 @@
 <ion-view view-title="Record" class="record-section">
-
     <ion-content class="padding" scroll='false'>
-        <br>
+        <label class="item item-input item-select">
+            <div class="input-label">
+                Class({{classOption}})
+            </div>
+            <select ng-model='classOption'>
+                <option ng-repeat='item in $storage'>{{item.class}}</option>
+            </select>
+        </label>
         <div class="row">
             <div class="col">
                 <button class="button button-block button-light icon-left record-bubble" ng-class="{'button-assertive': status === 'RECORDING'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="border-color: rgb(255, 0, 0);">
@@ -18,7 +24,7 @@
         <br>
         <div class="row row-bottom record-file">
             <div class="col">
-                <button class="button button-block button-light " ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}">
+                <button class="button button-block button-light " ng-click="save(classOption)" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}">
                     <div class="ion-archive"></div>Save</button>
             </div>
             <div class="col">
