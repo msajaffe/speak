@@ -129,3 +129,58 @@ angular.module('starter.services', [])
 
     return service;
 })
+
+.factory('authFactory', function($state, $q, $timeout, $ionicLoading, $ionicPlatform) {
+
+    var service = {};
+
+    service.createUser = function(userInfo) {
+
+        firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+            .catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+    }
+
+    service.signinEmail = function(userInfo) {
+        var deferred = $q.defer();
+        firebase.auth().signInWithEmailAndPassword(userInfo.email, userInfo.password)
+            .then(function() {
+                deferred.resolve(true);
+            })
+            .catch(function(error) {
+                // Handle Errors here.
+                deferred.resolve(error)
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
+            });
+        return deferred.promise;
+    }
+
+    service.signout = function() {
+        firebase.auth().signOut()
+            .then(function() {
+                // Sign-out successful.
+            }, function(error) {
+                // An error happened.
+            });
+    }
+
+    $ionicPlatform.ready(function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                service.user = user;
+                $state.go('tab.record');
+            } else {
+                service.user = null;
+                $state.go('welcome');
+            }
+
+        });
+    })
+
+    return service;
+})

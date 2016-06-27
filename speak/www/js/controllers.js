@@ -1,11 +1,12 @@
 angular.module('starter.controllers', [])
 
 
-.controller('RecordCtrl', ['$scope', '$interval', '$timeout', '$ionicPlatform', '$cordovaMedia', 'GUID', '$cordovaFile', '$cordovaFileTransfer', 'dataFactory', '$localStorage',
-    function($scope, $interval, $timeout, $ionicPlatform, $cordovaMedia, GUID, $cordovaFile, $cordovaFileTransfer, dataFactory, $localStorage) {
+.controller('RecordCtrl', ['$ionicPopup', '$scope', '$interval', '$timeout', '$ionicPlatform', '$cordovaMedia', 'GUID', '$cordovaFile', '$cordovaFileTransfer', 'dataFactory', '$localStorage',
+    function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia, GUID, $cordovaFile, $cordovaFileTransfer, dataFactory, $localStorage) {
 
 
         $scope.$storage = $localStorage.classes;
+
 
 
         var seconds = 0;
@@ -136,7 +137,6 @@ angular.module('starter.controllers', [])
         $scope.save = function(classOption) {
 
             if (classOption) {
-                // var result = $filter('filter')($scope.$storage, classOption, false, 'class')
                 var CLASS;
                 for (var key in $scope.$storage) {
                     var name = $scope.$storage[key].class;
@@ -178,6 +178,18 @@ angular.module('starter.controllers', [])
                     send(i);
                     $scope.$storage[CLASS].parts.push($scope.recordFileNames[i]);
                 }
+            } else {
+                var myPopup = $ionicPopup.show({
+                    templateUrl: 'templates/alert.html',
+                    title: 'Please choose Class',
+                    // subTitle: 'Please use normal things',
+                    scope: $scope,
+                    buttons: [{
+                        text: '<b>Okey!</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {}
+                    }]
+                });
             }
         }
 
@@ -260,18 +272,22 @@ angular.module('starter.controllers', [])
     }
 ])
 
-.controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory) {
+.controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory, $ionicModal) {
     $scope.details = $localStorage.classes[$stateParams.index];
 
     var initMedia = function(url) {
         var my_media = new Media(url,
             function() {},
             function() {},
-            function(status) { $scope.state = status; }
+            function(status) {
+                $scope.state = status;
+                if (status == 4 && $scope.media.INDEX) {
+                    $scope.play[$scope.media.INDEX] = false;
+                }
+            }
         );
         return my_media;
     }
-
 
 
     var startMedia = function(index) {
@@ -288,31 +304,37 @@ angular.module('starter.controllers', [])
         $scope.media.play();
     }
 
+    $scope.play = [];
+
     $scope.manageMedia = function(index) {
         if ($scope.media) {
             if (index == $scope.media.INDEX) {
-                console.log($scope.state);
                 switch ($scope.state) {
                     case Media.MEDIA_NONE:
                         {
+                            $scope.play[index] = false
                             break;
                         }
                     case Media.MEDIA_STARTING:
                         {
+                            $scope.play[index] = true;
                             break;
                         }
                     case Media.MEDIA_RUNNING:
                         {
+                            $scope.play[index] = false;
                             pauseMedia();
                             break;
                         }
                     case Media.MEDIA_PAUSED:
                         {
+                            $scope.play[index] = true;
                             resumeMedia();
                             break;
                         }
                     case Media.MEDIA_STOPPED:
                         {
+                            $scope.play[index] = true;
                             resumeMedia();
                             break;
                         }
@@ -320,19 +342,28 @@ angular.module('starter.controllers', [])
 
             } else {
                 $scope.media.release();
+                $scope.play[$scope.media.INDEX] = false;
+                $scope.play[index] = true;
                 startMedia(index);
             }
         } else {
             startMedia(index);
+            $scope.play[index] = true;
         }
     }
 
 
 })
 
-.controller('ClassesListCtrl', function($scope, $state, $localStorage, dataFactory, mediaFactory, $filter) {
+.controller('ClassesListCtrl', function($ionicModal, $scope, $state, $localStorage, dataFactory, mediaFactory, $filter) {
     $scope.$storage = $localStorage.classes;
     $scope.files = $localStorage.audioFiles;
+
+    $ionicModal.fromTemplateUrl('templates/new-class-modal.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.createClassModal = modal;
+    });
 
     $scope.playMedia = mediaFactory.playMedia;
 
@@ -340,13 +371,10 @@ angular.module('starter.controllers', [])
         $state.go('tab.classes-details', { index: index })
     }
 
-    $scope.AddClass = function(name) {
-        var item = {
-            class: name,
-            created_at: new Date().getTime(),
-            description: '',
-            parts: []
-        }
+    $scope.createClass = function(item) {
+        item.parts = [];
+        item.created_at = new Date().getTime()
+
         var name = item.class;
         var result = $filter('filter')($scope.$storage, name, false, 'class')
         if (result[0])
@@ -355,11 +383,12 @@ angular.module('starter.controllers', [])
             $scope.message = '';
             $scope.$storage.push(item);
         }
+        $scope.createClassModal.hide();
     }
 
 })
 
-.controller('AccountCtrl', function($scope, $state) {
+.controller('AccountCtrl', function($scope, $state, authFactory) {
     $scope.go2Settings = function() {
         $state.go('tab.account-settings');
     }
@@ -367,10 +396,43 @@ angular.module('starter.controllers', [])
     $scope.go2FileStorage = function() {
         $state.go('tab.account-storage');
     }
+
+    $scope.signout = authFactory.signout;
 })
 
-.controller('welcomeCtrl', function($scope, $state, navigationFactory) {
+.controller('welcomeCtrl', function($scope, $state, navigationFactory, authFactory, $ionicPlatform) {
     $scope.go2 = navigationFactory.go2;
+
+
+
+    $scope.createUser = function(userInfo) {
+        if (userInfo.password === userInfo.password1)
+            authFactory.createUser(userInfo);
+        else $scope.message = 'please check your credentials.'
+    }
+
+    $scope.signinEmail = function(userInfo) {
+        authFactory.signinEmail(userInfo).then(function(res) {
+            if (res.message) {
+                $scope.message = res.message;
+            }
+
+        });
+    }
+
+    $ionicPlatform.ready(function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                service.user = user;
+                $state.go('tab.record');
+            } else {
+                service.user = null;
+                $state.go('welcome');
+            }
+
+        });
+    })
+
 })
 
 .controller('AccountSettingsCtrl', function() {

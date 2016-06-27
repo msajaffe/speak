@@ -2,8 +2,7 @@
     <ion-content>
         <p>{{message}}</p>
         <div class="row">
-            <input type="text" placeholder="class name" class="col-80" ng-model='name'>
-            <button class="button col-20" ng-click='AddClass(name);name=""'>Add</button>
+            <button class="button button-block" ng-click='createClassModal.show()'>Add Class</button>
         </div>
         <ion-list>
             <ion-item ng-repeat="item in $storage" ng-click='go2Details($index) '>

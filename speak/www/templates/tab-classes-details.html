@@ -3,7 +3,7 @@
         <ion-list>
             <ion-item ng-repeat="item in details.parts | orderBy:'create_at'">
                 <span>part-{{$index+1}}</span>
-                <i ng-class="{ 'ion-play': !play,'ion-pause': play}" style="float:right;font-size:20px;" ng-click='play=!play;manageMedia($index+"")'></i>
+                <i ng-class="{ 'ion-play': !play[$index],'ion-pause': play[$index]}" style="float:right;font-size:20px;" ng-click='manageMedia($index+"")'></i>
             </ion-item>
         </ion-list>
     </ion-content>

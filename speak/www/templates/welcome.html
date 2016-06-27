@@ -1,28 +1,21 @@
 <ion-view view-title="Welcome">
     <ion-content class="padding">
-        <div class="row">
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(0)">Record</button>
-            </div>
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(1)">Audio</button>
-            </div>
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(4)">Accounts</button>
-            </div>
+        {{message}}
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input ng-model="newUser.email" type="email" placeholder="email">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password</span>
+                <input ng-model="newUser.password" type="password" placeholder="password">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password</span>
+                <input ng-model="newUser.password1" type="password" placeholder="password again">
+            </label>
+            <button class="button button-full button-positive" ng-click="createUser(newUser)">Signup</button>
+            <button class="button button-full button-positive" ng-click="signinEmail(newUser)">Signin</button>
         </div>
-        <!-- 
-        <div class="row">
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(2)">Notes</button>
-            </div>
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(3)">Themes</button>
-            </div>
-            <div class="col-33">
-                <button class="button button-block" ng-click="go2(5)">Settings</button>
-            </div>
-        </div>
-         -->
     </ion-content>
 </ion-view>
