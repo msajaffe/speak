@@ -1,20 +1,47 @@
 <ion-view view-title="File Storage">
-    <ion-content>
-        <div class="row">
-            <div class="col-50">
-                <button class="button button-block" ng-click="go2Settings()">Recent Files</button>
+    <ion-content id="storage">
+         <div class="row">
+            <div class="col-50 storage-item">
+                <button class="button" ng-click="go2Settings()">
+                <div class="row">
+                 <div class="icon-wrap"><div class="ion-android-folder icon"></div> </div>
+                  
+                </div>
+                <div class="row"><span>Recent Files</span></div> 
+                <div class="row"><div class="storage-space"><div class="storage-used"></div></div></div> 
+                </button>
             </div>
-            <div class="col-50">
-                <button class="button button-block" ng-click="go2FileStorage()">Dropbox</button>
+            <div class="col-50 storage-item">
+                <button class="button" ng-click="go2FileStorage()">
+                <div class="row">
+                   <div class="icon-wrap"><div class="ion-social-dropbox icon"></div></div>
+                </div>
+                <div class="row"><span>Dropbox</span></div>
+                <div class="row"><div class="storage-space"><div class="storage-used"></div></div></div>
+                </button>
+            </div> 
+         </div>
+          
+           <div class="row">
+                <div class="col-50 storage-item">
+                <button class="button" ng-click="go2Settings()">
+                    <div class="row">
+                        <div class="icon-wrap"><div class="ion-android-phone-portrait icon"></div></div>
+                    </div>
+                    <div class="row"><span>Device Storage</span></div>
+                    <div class="row"><div class="storage-space"><div class="storage-used"></div></div></div>
+                </button>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-50">
-                <button class="button button-block" ng-click="go2Settings()">Device Storage</button>
+            <div class="col-50 storage-item">
+                <button class="button" ng-click="go2FileStorage()">
+                    <div class="row">
+                        <div class="icon-wrap"><div class="ion-document icon"></div></div>
+                    </div>
+                    <div class="row"><span>SD Card</span></div>
+                    <div class="row"><div class="storage-space"><div class="storage-used"></div></div></div>
+                </button>
             </div>
-            <div class="col-50">
-                <button class="button button-block" ng-click="go2FileStorage()">SD Card</button>
             </div>
-        </div>
+            
     </ion-content>
 </ion-view>

@@ -24,9 +24,19 @@
             </ion-item>
         </ion-list>
     -->
-        <div ng-repeat-start='rows in [1,2,3]' class="row" style="padding: 0;">
-            <div class='col-33 text-center box-class' ng-repeat="item in classes" ng-click='go2Details($index)'>
-                {{item.class}}
+       <br>
+       <div class="class-wrap">
+           
+       </div>
+        <div ng-repeat-start='rows in [1,2,3,4,5]' class="row" style="padding: 0;">
+            <div class='col-90 text-center box-class' ng-repeat="item in classes" ng-click='go2Details($index)'>
+                <div class="row class-name">
+                    {{item.coursecode}}   
+                </div>
+                <div class="row class-code">
+                    {{item.class}} 
+                </div>
+                
             </div>
         </div>
         <div ng-repeat-end></div>

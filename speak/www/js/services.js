@@ -50,20 +50,37 @@ angular.module('starter.services', [])
     var service = {};
 
     service.classes = [{
-        class: 'ECE251',
+        class: 'Numercial Methods 2',
+        coursecode:'ECE204B',
         id: 1,
         start_time: new Date().getTime(),
         end_time: new Date().getTime(),
         file: 'link-251'
     }, {
-        class: 'ECE151',
+        class:'Advanced Calculus 2',
+        coursecode: 'ECE206',
         id: 2,
         start_time: new Date().getTime(),
         end_time: new Date().getTime(),
         file: 'link-151'
     }, {
-        class: 'ECE351',
+        class:'Embedded Microprocessor Systems',
+        coursecode: 'ECE224',
         id: 3,
+        start_time: new Date().getTime(),
+        end_time: new Date().getTime(),
+        file: 'link-351'
+    },{
+        class:'Operating Systems and Systems Programming',
+        coursecode: 'ECE254',
+        id: 4,
+        start_time: new Date().getTime(),
+        end_time: new Date().getTime(),
+        file: 'link-351'
+    },{
+        class:'Electrical Properties of Materials',
+        coursecode: 'ECE209',
+        id: 5,
         start_time: new Date().getTime(),
         end_time: new Date().getTime(),
         file: 'link-351'
