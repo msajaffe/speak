@@ -1,0 +1,19 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">New Class</h1>
+        <button class="button button-clear button-primary" ng-click="createClassModal.hide()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Class Name</span>
+                <input ng-model="newClass.class" type="text">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Class Description</span>
+                <textarea ng-model="newClass.description" type="text" rows="10"></textarea>
+            </label>
+            <button class="button button-full button-positive" ng-click="createClass(newClass)">Create</button>
+        </div>
+    </ion-content>
+</ion-modal-view>
