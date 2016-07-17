@@ -420,19 +420,6 @@ angular.module('starter.controllers', [])
         });
     }
 
-    $ionicPlatform.ready(function() {
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                service.user = user;
-                $state.go('tab.record');
-            } else {
-                service.user = null;
-                $state.go('welcome');
-            }
-
-        });
-    })
-
 })
 
 .controller('AccountSettingsCtrl', function() {
