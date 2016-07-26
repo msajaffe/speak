@@ -1,0 +1,40 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "org.apache.cordova.speech.speechrecognition": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-audio-recorder-api": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "ro.martinescu.audio": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        }
+    }
+}
