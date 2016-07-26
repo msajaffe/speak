@@ -1,5 +1,8 @@
-$texttheme: #444444;
-$basetheme:#387EF5;
+
+$textcolor: #9E9EB6;
+$basecolor:#A7A8C7;
+$bgcolor: #FFFFFF;
+$iconcolor: #A7A8C7;
 @mixin squarebtn($size) {
     height: $size;
     width: $size;
@@ -16,73 +19,210 @@ $basetheme:#387EF5;
     margin-left: auto;
     margin-right: auto;
 }
+.title{
+    color:$textcolor !important;
+}
+ion-header-bar{
+    background-color:$bgcolor !important;
+    i{color:$iconcolor !important;}
+}
+ion-content{
+    background-color: $bgcolor !important;
+}
+.colored-half{
+  background-color: rgba(104,152,229,1);
+  background: linear-gradient(to bottom, rgba(104,152,229,1) 0%, rgba(99,146,227,1) 25%, rgba(97,141,224,1) 47%, rgba(86,134,222,1) 72%, rgba(80,127,220,1) 100%);
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    height:65%; width:150%;
+    transform:translateX(-16%);
+    margin:0 !important;
+}
+ion-content{
+    padding:0 !important;
+}
+.tab-nav{
+    background-color: $bgcolor !important;
+    border: none !important;
+    height:5em;
+    i{
+        font-size: 3.5em !important;
+    }
+    .tab-item{
+        transition: all 1s ease;
+        color: lighten($iconcolor,20%) !important;
+        span{
+           color: lighten($textcolor,30%) !important; 
+            }
+    }
+    .tab-item-active{
+        color: $iconcolor !important;
+        span{
+           color: $textcolor !important; 
+        }
+    }
+}
+.col-90{
+    height:18vh; 
+    max-width:98% !important;
+    min-width:98%;
+    margin:1%;
+    line-height: 15vh; 
+    /*border:solid 0.01vh lighten($basecolor,20%);*/
+    background-color: #ECEDFA;
+    color:$textcolor; line-height: 19vh;
+    font-weight: 600; font-size: 1.6em;
+    .row{
+        line-height: 1.2em;
+         &:nth-child(1){
+             margin-top:0.1em;
+            font-size: 1.1em;
+        }
+        &:nth-child(2){
+            font-size: 0.7em !important;
+            font-weight: 400;
+        }   
+    }
+    
+}
+ion-content{
+    background: #FFFFFF;   
+}
+.record-file {
+   /* width:80%;*/
+    padding:1vh 0vh;
+    .button {
+        width: 50%;
+        @include center-hor();
+        @include roundbtn(3.6em);
+        background-color: $iconcolor !important;
+        color:#ffffff; font-weight: 600;
+        opacity:0.7;
+        white-space: nowrap;
+        text-align: center;
+        padding:0;
+    }
+    .button-decor-wrapper{
+        @include center-hor();
+        padding:0;
+        /*border:solid 0.5px black;*/
+        height:3em; top:-1em;
+        .button-decor{
+            background-color: $iconcolor; 
+            @include roundbtn(2em);
+            position:relative;
+            opacity:0.85; 
+        }
+        .col-33{
+            &:nth-child(1){
+                .button-decor{
+                    margin-right: auto;
+                }
+            }
+            &:nth-child(2){
+                .button-decor{
+                @include roundbtn(1em);
+                 top:0.5em;
+                 @include center-hor();
+                 opacity:1;
+                }
+            }
+            &:nth-child(3){
+                .button-decor{
+                    @include roundbtn(2em);
+                 /*transform: translateX(5.6em)*/;
+                 margin-left: auto;
+                }
+            }
+        }    
+    }
+}
 
 .record-bubble {
     @include center-hor();
     @include roundbtn(14em);
     text-align: center;
+    background-color: transparent !important;
+    border-color: white !important;
+    color:white !important;
+    box-shadow: 0px 16px 46px 5px rgba(126,129,143,0.81);
+    transform:translateY(0.7em);
+    
     .ion-android-microphone {
         font-size: 3em;
+        color: $textcolor !important;
     }
     h1 {
-        color: $texttheme;
+        color: $textcolor !important;
+        font-weight: 400;
     }
 }
-
-.record-file {
-    .button {
-        width: 50%;
-        @include center-hor();
-    }
-    .ion-archive,
-    .ion-trash-b {
-        font-size: 3em;
-    }
-}
-
-.toggle-small {
-    input:checked + .track {
-        background-color: lighten($basetheme, 20%);
-        .handle {
-            background-color: $basetheme;
-        }
-    }
-}
-
-.record-bubble {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
+.bubble-outer{
+    width:18em; height: 18em;
     border-radius: 50%;
-    width: 14em !important;
-    height: 14em !important;
-    text-align: center;
+    background-color: #ECEDFA;
+    
 }
 
-.record-bubble .ion-android-microphone {
-    font-size: 3em;
+//ACCOUNT
+#account{
+    .button-block{
+        @include center-hor();
+        width:60%;
+        background-color: $basecolor;
+        color: white;
+        border-radius: 5vh;
+        transform: translateY(17vh);
+    }
 }
-
-.record-bubble h1 {
-    color: #444444;
-}
-
-.record-file .button {
-    width: 50%;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.record-file .ion-archive,
-.record-file .ion-trash-b {
-    font-size: 3em;
-}
-
-.toggle-small input:checked + .track {
-    background-color: #99bdfa;
-}
-
-.toggle-small input:checked + .track .handle {
-    background-color: #387EF5;
+#storage{
+    .storage-item{
+        height:14em;
+        margin-top: 0.8em;
+        padding:0;
+        border-radius: 0.3em;    
+    }
+    .button{
+        margin:0.5em;
+        border:solid $basecolor 1px;
+        background-color: transparent;
+        color:darken($textcolor,20%); 
+        width:90%;
+        height:100%;
+        text-align: left;
+        border-radius: 0.4em;
+        .row{
+            height:60%;
+            width:100%;
+            span{
+                width:100%;
+                text-align: center;
+            }
+        }
+        .icon-wrap{
+            background-color: $basecolor;
+            @include roundbtn(4.8em);
+            @include center-hor();
+            margin-top:0.8em;
+            text-align: center;
+            .icon{
+                transform: translateY(1em) scale(1.2);
+                color:white;
+            }
+        }
+        .storage-space{
+            background-color: darken($basecolor,10%);
+            width:100%;
+            height:1em;
+            border-radius: 1em;
+            padding:2.5%;
+            transform: translateY(-4em);
+            .storage-used{
+                height:100%;
+                background-color: lighten($basecolor,20%);
+                border-radius: inherit;
+                width:70%;
+            }
+        } 
+    }
 }
