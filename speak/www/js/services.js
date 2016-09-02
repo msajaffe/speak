@@ -1,6 +1,97 @@
 angular.module('starter.services', [])
+.factory('AuthenticationService', function($http, $state) {
+  var serverURL = "http://192.168.10.235:3000/";
+  var transcriptionURL = "https://speech.googleapis.com/v1beta1/speech:syncrecognize/"
+  var tick = null;
+  return {
+    getURL : function(){
+      return serverURL;
+    },
+    setURL : function(setURL){
+      serverURL = setURL;
+    },
+    getTicket : function(){
+      return tick;
+    },
+    setTicket: function(ticket){
+      tick = ticket;
+    },
+    //REST API call to authenticate a user's credentials
+    login: function(user, pass){
 
-.factory('GUID', function() {
+    }
+  };
+}).factory('LectureService', function (){
+  return {
+     getTranscription: function(callback) {
+      $http({
+        method: 'POST',
+        url: serverURL + '/uploadLecture',
+        headers: {'authticket': '123'} //moar
+      }).then(function successCallback(msg) {
+        console.log(msg);
+        callback();
+      }, function failCallback(msg) {
+        console.log(msg);
+      });
+    },
+    setupFilters: function (stream) {
+       // sound manipulation filters for input stream
+       var volume, compressor, bandpassFilter;
+       console.log("Web Audio API (Audio Context) is available.");
+       this.status = "INITIALIZING";
+       this.useAudioContextApi = true;
+       var bufferSize = 16384; // number of samples to collect before analyzing raw adio
+       // use the AudioContextApi
+       console.log("Using Audio Context API.");
+
+       var context = new contextClass();
+       var input = context.createMediaStreamSource(stream);
+       var dest = context.createMediaStreamDestination();
+       javascript_node = context.createScriptProcessor(bufferSize, 1, 1);
+       compressor = context.createDynamicsCompressor();
+
+       volume = context.createGain();
+       volume.gain.value = 5;
+       volume.connect(compressor);
+
+       bandpassFilter = context.createBiquadFilter();
+       bandpassFilter.type = 'bandpass';
+       bandpassFilter.Q.value = 8.30;
+       bandpassFilter.frequency.value = 355;
+       bandpassFilter.connect(volume);
+
+       input.connect(volume);
+       compressor.connect(dest);
+
+       // setup the analyzer node
+       analyser = context.createAnalyser();
+       analyser.smoothingTimeConstant = 0.0;
+       analyser.fftSize = 1024; // must be power of two
+
+       // connect the nodes together
+       analyser.connect(javascript_node);
+       javascript_node.connect(context.destination);
+
+       // allocate the freq data array
+       array = new Uint8Array(analyser.frequencyBinCount);
+       console.log(array);
+
+       //var config = {bufferLen: bufferSize};
+       //self.recorder = new Recorder(output, config);
+       //using the same matt diamond recorder api but reconciled to match with pocketsphinx
+       var config = {inputBufferLength: bufferSize, outputSampleRate: 44100};
+       self.recorder = new AudioRecorder(output, config);
+
+       var output = context.createMediaStreamSource(dest.stream);
+       if (self.recognizer) {
+         self.recorder.consumers = [self.recognizer];
+       }
+       console.log("Recorder started successfully.");
+       self.status = "READY";
+     }
+   };
+}).factory('GUID', function() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
@@ -48,7 +139,7 @@ angular.module('starter.services', [])
 .factory('dataFactory', function($localStorage) {
 
     var service = {};
-    
+
     service.classes = [{
         class: 'Numercial Methods 2',
         coursecode:'ECE204B',

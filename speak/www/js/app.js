@@ -61,7 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         views: {
             'tab-record': {
                 templateUrl: 'templates/tab-record.html',
-                controller: 'RecordCtrl'
+                controller: 'Record2Ctrl'
             }
         }
     })
@@ -122,6 +122,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/welcome');
+    $urlRouterProvider.otherwise('/tab/record');
 
 });

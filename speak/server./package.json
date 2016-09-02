@@ -1,0 +1,17 @@
+{
+  "name": "speak-server",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Sibtain Jafferi msajaffe@uwaterloo.ca",
+  "private": true,
+  "dependencies": {
+    "watson-developer-cloud": "latest",
+    "fs-extra": "latest",
+    "googleapis": "latest",
+    "async": "latest",
+    "http": "latest",
+    "connect": "latest",
+    "express": "latest",
+    "express-fileupload": "latest"
+  }
+}

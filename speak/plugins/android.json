@@ -7,33 +7,36 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-file-transfer": {
+        "cordova-plugin-audio-recorder-api": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
-        "org.apache.cordova.speech.speechrecognition": {
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
         "cordova-plugin-media": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
-        "cordova-plugin-audio-recorder-api": {
+        "org.apache.cordova.speech.speechrecognition": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
         "ro.martinescu.audio": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
-        "cordova-plugin-background-mode": {
+        "com.ispikit.cordova": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         }
     },
     "dependent_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
         "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.ionicframework.speak787788"
-        },
-        "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         }
     }

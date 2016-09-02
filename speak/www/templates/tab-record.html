@@ -12,9 +12,9 @@
             <div class="col">
                 <center>
                     <div class="bubble-outer">
-                        <button class="button button-block button-light icon-left record-bubble" ng-class="{'button-assertive': status === 'RECORDING'}" ng-click="toggleRecord()" ng-show="cordova.loaded" style="border-color: rgb(255, 0, 0);">
+                        <button class="button button-block button-light icon-left record-bubble" ng-class="{'button-assertive': status === 'RECORDING'}" ng-click="toggleRecord();" style="border-color: rgb(255, 0, 0);">
                             <div class="ion-android-microphone" style="text-align:center;"></div>
-                            <h1 style="text-align:center;   font-size: 15vhvw;" class="record-time">{{textContent}}</h1>
+                            <h1 style="text-align:center;   font-size: 15vhvw;" class="record-time">{{status}}</h1>
                         </button>
                     </div>
                 </center>
