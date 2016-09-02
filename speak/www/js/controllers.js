@@ -304,16 +304,22 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
       }
     };
 
-  }
+     var getStatus = function(){
+      return "LectureService.status";
+    }
 
 
 
   navigator.getUserMedia({audio:true},
-       LectureService.SetupFilters,
+       function(){
+         $scope.status = getStatus();
+         return LectureService.SetupFilters;
+       },
        function (err) {
          console.log("Error getting user media: " + err);
          self.useAudioContextApi = false;
        });
+  }
 ])
 
 .controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory, $ionicModal) {
