@@ -1,8 +1,8 @@
-<ion-view view-title="Classes">
+<ion-view view-title="Classes" id='classes'>
     <ion-content>
         <p>{{message}}</p>
-        <div class="row">
-            <button class="button button-block" ng-click='createClassModal.show()'>Add Class</button>
+        <div class="add-class-container">
+            <button class="add-class" ng-click='createClassModal.show()'><i class='ion-plus'></i></button>
         </div>
         <ion-list>
             <ion-item ng-repeat="item in $storage" ng-click='go2Details($index) '>

@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 
 
-.controller('Record2Ctrl', ['$ionicPopup', '$scope', '$interval', '$timeout', '$ionicPlatform', '$cordovaMedia', 'GUID', '$cordovaFile', '$cordovaFileTransfer', 'dataFactory', '$localStorage',
-function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia, GUID, LectureService, $cordovaFile, $cordovaFileTransfer, dataFactory, $localStorage) {
+.controller('Record2Ctrl', ['$ionicPopup', '$scope', '$interval', '$timeout', '$ionicPlatform', '$cordovaMedia', 'GUID', '$cordovaFile', '$cordovaFileTransfer', 'dataFactory', '$localStorage', 'LectureService',
+function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia, GUID, $cordovaFile, $cordovaFileTransfer, dataFactory, $localStorage, LectureService) {
 
   $scope.$storage = $localStorage.classes;
   $scope.textContent = "00:00:00";
@@ -11,6 +11,7 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
   $scope.recordFileNames = [];
   $scope.soundRecorder = {};
   $scope.recording = false;
+  $scope.status = "INITIALIZING"
   var seconds = 0;
   var minutes = 0;
   var hours = 0;
@@ -38,6 +39,7 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
   }
 
   $scope.toggleRecord = function() {
+    $scope.soundRecorder = LectureService;
     console.log($scope.soundRecorder);
     if ($scope.recording) {
       $timeout.cancel(t);
@@ -108,18 +110,11 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
             var fileURL = "/" + fileEntry.nativeURL.split('///')[1];
             $scope.recordFileNames.push({ fileName: fileName, fileURL: fileURL, create_at: new Date().getTime() });
             console.log(fileEntry.nativeURL.split('///')[1]);
-            if ($scope.soundRecorder && $scope.soundRecorder.UsingWebAudioApi()) {
-              // When using AudioContext, only need to create it once.
               $scope.status = "INITIALIZING";
               var params = {fileUrl: fileURL, fileEntry: fileEntry};
-              $scope.soundRecorder = new SoundRecorder(params);
+              $scope.soundRecorder.Set(params);
+              $scope.soundRecorder.SetupFilters(self);
               $scope.status = "READY";
-            } else {
-              var options = {fileUrl: fileURL, fileEntry: fileEntry};
-              // uncomment this line if you want to use Martinescu library
-              //options.useMartinescu = true;
-              $scope.soundRecorder = new SoundRecorder(options);
-            }
             if (typeof callback === 'function') {
               callback();
             }
@@ -257,8 +252,6 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
         }
       }
 
-
-
       function onStatusChange() {}
 
       function onSuccess() {}
@@ -288,194 +281,199 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
         timer();
       }
 
-
-
-    function timer() {
-      t = $timeout(add, 1000);
-    }
-    $scope.safeApply = function(fn) {
-      var phase = this.$root.$$phase;
-      if (phase == '$apply' || phase == '$digest') {
-        if (fn && (typeof(fn) === 'function')) {
-          fn();
+      function timer() {
+        t = $timeout(add, 1000);
+      }
+      $scope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if (phase == '$apply' || phase == '$digest') {
+          if (fn && (typeof(fn) === 'function')) {
+            fn();
+          }
+        } else {
+          this.$apply(fn);
         }
-      } else {
-        this.$apply(fn);
+      };
+
+      $scope.getStatus = function(){
+        return "LectureService.status";
+      };
+
+      if (navigator) {
+                navigator.getUserMedia = (navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia);
+              }
+      var self = this;
+      navigator.getUserMedia({audio:true},
+        function(){
+          return function (){
+        //    LectureService.SetupFilters(self);
+            $scope.status = $scope.getStatus();
+          };
+        },
+        function (err) {
+          console.log("Error getting user media: " + err);
+          self.useAudioContextApi = false;
+        });
       }
-    };
+    ])
 
-     var getStatus = function(){
-      return "LectureService.status";
-    }
+    .controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory, $ionicModal) {
+      $scope.details = $localStorage.classes[$stateParams.index];
+
+      var initMedia = function(url) {
+        var my_media = new Media(url,
+          function() {},
+          function() {},
+          function(status) {
+            $scope.state = status;
+            if (status == 4 && $scope.media.INDEX) {
+              $scope.play[$scope.media.INDEX] = false;
+            }
+          }
+        );
+        return my_media;
+      }
 
 
+      var startMedia = function(index) {
+        $scope.media = initMedia($scope.details.parts[index].fileURL);
+        $scope.media.INDEX = index;
+        $scope.media.play();
+      }
 
-  navigator.getUserMedia({audio:true},
-       function(){
-         $scope.status = getStatus();
-         return LectureService.SetupFilters;
-       },
-       function (err) {
-         console.log("Error getting user media: " + err);
-         self.useAudioContextApi = false;
-       });
-  }
-])
+      var pauseMedia = function() {
+        $scope.media.pause();
+      }
 
-.controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory, $ionicModal) {
-  $scope.details = $localStorage.classes[$stateParams.index];
+      var resumeMedia = function() {
+        $scope.media.play();
+      }
 
-  var initMedia = function(url) {
-    var my_media = new Media(url,
-      function() {},
-      function() {},
-      function(status) {
-        $scope.state = status;
-        if (status == 4 && $scope.media.INDEX) {
-          $scope.play[$scope.media.INDEX] = false;
+      $scope.play = [];
+
+      $scope.manageMedia = function(index) {
+        if ($scope.media) {
+          if (index == $scope.media.INDEX) {
+            switch ($scope.state) {
+              case Media.MEDIA_NONE:
+              {
+                $scope.play[index] = false
+                break;
+              }
+              case Media.MEDIA_STARTING:
+              {
+                $scope.play[index] = true;
+                break;
+              }
+              case Media.MEDIA_RUNNING:
+              {
+                $scope.play[index] = false;
+                pauseMedia();
+                break;
+              }
+              case Media.MEDIA_PAUSED:
+              {
+                $scope.play[index] = true;
+                resumeMedia();
+                break;
+              }
+              case Media.MEDIA_STOPPED:
+              {
+                $scope.play[index] = true;
+                resumeMedia();
+                break;
+              }
+            }
+
+          } else {
+            $scope.media.release();
+            $scope.play[$scope.media.INDEX] = false;
+            $scope.play[index] = true;
+            startMedia(index);
+          }
+        } else {
+          startMedia(index);
+          $scope.play[index] = true;
         }
       }
-    );
-    return my_media;
-  }
 
 
-  var startMedia = function(index) {
-    $scope.media = initMedia($scope.details.parts[index].fileURL);
-    $scope.media.INDEX = index;
-    $scope.media.play();
-  }
+    })
 
-  var pauseMedia = function() {
-    $scope.media.pause();
-  }
+    .controller('ClassesListCtrl', function($ionicModal, $scope, $state, $localStorage, dataFactory, mediaFactory, $filter) {
+      $scope.$storage = $localStorage.classes;
+      $scope.files = $localStorage.audioFiles;
 
-  var resumeMedia = function() {
-    $scope.media.play();
-  }
+      $ionicModal.fromTemplateUrl('templates/new-class-modal.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.createClassModal = modal;
+      });
 
-  $scope.play = [];
+      $scope.playMedia = mediaFactory.playMedia;
 
-  $scope.manageMedia = function(index) {
-    if ($scope.media) {
-      if (index == $scope.media.INDEX) {
-        switch ($scope.state) {
-          case Media.MEDIA_NONE:
-          {
-            $scope.play[index] = false
-            break;
-          }
-          case Media.MEDIA_STARTING:
-          {
-            $scope.play[index] = true;
-            break;
-          }
-          case Media.MEDIA_RUNNING:
-          {
-            $scope.play[index] = false;
-            pauseMedia();
-            break;
-          }
-          case Media.MEDIA_PAUSED:
-          {
-            $scope.play[index] = true;
-            resumeMedia();
-            break;
-          }
-          case Media.MEDIA_STOPPED:
-          {
-            $scope.play[index] = true;
-            resumeMedia();
-            break;
-          }
+      $scope.go2Details = function(index) {
+        $state.go('tab.classes-details', { index: index })
+      }
+
+      $scope.createClass = function(item) {
+        item.parts = [];
+        item.created_at = new Date().getTime()
+
+        var name = item.class;
+        var result = $filter('filter')($scope.$storage, name, false, 'class')
+        if (result[0])
+        $scope.message = 'this class already exists';
+        else {
+          $scope.message = '';
+          $scope.$storage.push(item);
         }
-
-      } else {
-        $scope.media.release();
-        $scope.play[$scope.media.INDEX] = false;
-        $scope.play[index] = true;
-        startMedia(index);
-      }
-    } else {
-      startMedia(index);
-      $scope.play[index] = true;
-    }
-  }
-
-
-})
-
-.controller('ClassesListCtrl', function($ionicModal, $scope, $state, $localStorage, dataFactory, mediaFactory, $filter) {
-  $scope.$storage = $localStorage.classes;
-  $scope.files = $localStorage.audioFiles;
-
-  $ionicModal.fromTemplateUrl('templates/new-class-modal.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.createClassModal = modal;
-  });
-
-  $scope.playMedia = mediaFactory.playMedia;
-
-  $scope.go2Details = function(index) {
-    $state.go('tab.classes-details', { index: index })
-  }
-
-  $scope.createClass = function(item) {
-    item.parts = [];
-    item.created_at = new Date().getTime()
-
-    var name = item.class;
-    var result = $filter('filter')($scope.$storage, name, false, 'class')
-    if (result[0])
-    $scope.message = 'this class already exists';
-    else {
-      $scope.message = '';
-      $scope.$storage.push(item);
-    }
-    $scope.createClassModal.hide();
-  }
-
-})
-
-.controller('AccountCtrl', function($scope, $state, authFactory) {
-  $scope.go2Settings = function() {
-    $state.go('tab.account-settings');
-  }
-
-  $scope.go2FileStorage = function() {
-    $state.go('tab.account-storage');
-  }
-
-  $scope.signout = authFactory.signout;
-})
-
-.controller('welcomeCtrl', function($scope, $state, navigationFactory, authFactory, $ionicPlatform) {
-  //  $scope.go2 = navigationFactory.go2;
-
-
-
-  $scope.createUser = function(userInfo) {
-    if (userInfo.password === userInfo.password1)
-    authFactory.createUser(userInfo);
-    else $scope.message = 'please check your credentials.'
-  }
-
-  $scope.signinEmail = function(userInfo) {
-    authFactory.signinEmail(userInfo).then(function(res) {
-      if (res.message) {
-        $scope.message = res.message;
+        $scope.createClassModal.hide();
       }
 
-    });
-  }
+    })
 
-})
+    .controller('AccountCtrl', function($scope, $state, authFactory) {
+      $scope.go2Settings = function() {
+        $state.go('tab.account-settings');
+      }
 
-.controller('AccountSettingsCtrl', function() {
+      $scope.go2FileStorage = function() {
+        $state.go('tab.account-storage');
+      }
 
-})
+      $scope.signout = authFactory.signout;
+    })
 
-.controller('AccountStorageCtrl', function() {
+    .controller('welcomeCtrl', function($scope, $state, navigationFactory, authFactory, $ionicPlatform) {
+      //  $scope.go2 = navigationFactory.go2;
 
-})
+
+
+      $scope.createUser = function(userInfo) {
+        if (userInfo.password === userInfo.password1)
+        authFactory.createUser(userInfo);
+        else $scope.message = 'please check your credentials.'
+      }
+
+      $scope.signinEmail = function(userInfo) {
+        authFactory.signinEmail(userInfo).then(function(res) {
+          if (res.message) {
+            $scope.message = res.message;
+          }
+
+        });
+      }
+
+    })
+
+    .controller('AccountSettingsCtrl', function() {
+
+    })
+
+    .controller('AccountStorageCtrl', function() {
+
+    })

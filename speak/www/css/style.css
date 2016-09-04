@@ -1,6 +1,97 @@
 .title {
   color: #9E9EB6 !important; }
 
+/*////////////////////////NINJA STYLES/////////////////////////////////////*/
+.container-ninja {
+  height: 15em;
+  width: 15em;
+  position: relative;
+  margin: 0 auto;
+}
+.container-ninja .antena {
+  border: solid #2F383F 1px;
+  height: 1em;
+  width: 1em;
+  position: relative;
+  margin: 0 auto;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  background-color: #2F383F;
+}
+.container-ninja .antena:after {
+  display: block;
+  content: '';
+  border: solid #2F383F 1px;
+  height: 0.5em;
+  width: 40%;
+  position: relative;
+  margin: 0 auto;
+  top: 1em;
+  background-color: inherit;
+}
+.container-ninja .body {
+  border: solid #2F383F 1px;
+  height: 12em;
+  width: 10em;
+  position: relative;
+  margin: 0 auto;
+  top: 0.5em;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  background-color: #2F383F;
+}
+.container-ninja .body .face {
+  border: solid #2F383F 1px;
+  position: relative;
+  margin: 0 auto;
+  width: 70%;
+  height: 4em;
+  top: 15%;
+  border-radius: 5em 5em 3.8em 3.8em;
+  background-color: white;
+}
+.container-ninja .body .face .eye-container {
+  position: relative;
+  margin: 0 auto;
+  width: 85%;
+  height: 1.5em;
+  top: 35%;
+}
+.container-ninja .body .face .eye-container .eye {
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  border: solid #2F383F 1px;
+  position: relative;
+  background-color: #2F383F;
+}
+.container-ninja .body .face .eye-container .eye:nth-child(2) {
+  margin-left: auto;
+  top: -1.3em;
+}
+.container-ninja .body .chest {
+  width: 35%;
+  height: 1em;
+  position: relative;
+  top: 23%;
+  left: 53%;
+}
+.container-ninja .body .chest .btn {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  position: absolute;
+  background-color: white;
+}
+.container-ninja .body .chest .btn:nth-child(2) {
+  left: 33%;
+}
+.container-ninja .body .chest .btn:nth-child(3) {
+  left: 66%;
+}
+
 ion-header-bar {
   background-color: #FFFFFF !important; }
   ion-header-bar i {
@@ -194,5 +285,134 @@ ion-content {
       background-color: #e5e6ef;
       border-radius: inherit;
       width: 70%; }
+#classes .item-content{
+  height:5em;
+  background-color:#42CB6F;
+}
+h2{
+  color:white;
+  font-weight:600;
+  font-size:1.3em;
+  letter-spacing: 1px;
+}
+#classes .add-class-container {
+  position: fixed;
+  left: 75%;
+  top: 80%; }
+  #classes .add-class-container .add-class {
+    border-radius: 50%;
+    width: 3em !important;
+    height: 3em !important;
+    background-color: #A7A8C7;
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0vh 0.5vh 2vh 0.1vh #b3b3b3; }
+
+#new-class-modal .content {
+  width: 80%;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif !important; }
+#new-class-modal .container-ninja {
+  margin:1em auto 1em auto;
+  transform:scale(0.8);
+}
+#new-class-modal .item-input {
+  padding: 0;
+  width:90%;
+  margin:0em auto 0em auto;}
+#new-class-modal input {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  border-bottom: solid #A7A8C7 0.1em;
+  margin: 1em 0;
+  padding-bottom: 1.5em;
+  margin-bottom:1em; }
+#new-class-modal ::-webkit-input-placeholder {
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  font-family: 'Open Sans', sans-serif !important;
+  color:#A7A8C7;
+}
+#new-class-modal .color-container {
+  height: 3.5em;
+  position: relative;
+  margin:1em auto 1em auto; }
+  #new-class-modal .color-container .color {
+    border-radius: 50%;
+    width: 3em !important;
+    height: 3em !important;
+    margin: 0 0.2em;
+    display: inline-block;
+    border-style:solid; border-width:5px;
+    transition: all 0.4s ease-in-out; }
+    #new-class-modal .color-container .color:nth-child(1) {
+      border-color:#ED5564; }
+    #new-class-modal .color-container .color:nth-child(2) {
+      border-color:#EC87BF; }
+    #new-class-modal .color-container .color:nth-child(3) {
+      border-color:#5C9DED; /* #4EC2E7 */}
+    #new-class-modal .color-container .color:nth-child(4) {
+      border-color:#47CEC0;}
+    #new-class-modal .color-container .color:nth-child(5) {
+      border-color:#42CB6F; }
+/*    #new-class-modal .color-container .color:hover {
+      background-color: blue; }*/
+#new-class-modal .create {
+  border-radius: 2em;
+  width: 8em !important;
+  height: 3em !important;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.2em;
+  border: solid #A7A8C7 0.1em;
+  background-color: transparent; }
+  #new-class-modal .create i {
+    font-size: 2.2em;
+    color: #A7A8C7;
+    line-height: 1.3em }
+  #new-class-modal .create:hover{
+    background-color: #A7A8C7;
+  }
+  #new-class-modal .create:hover i{
+    color:white;
+  }
+
+
+
+
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('icomoon/fonts/icomoon.eot?nrd3tp');
+  src:  url('icomoon/fonts/icomoon.eot?nrd3tp#iefix') format('embedded-opentype'),
+    url('icomoon/fonts/icomoon.ttf?nrd3tp') format('truetype'),
+    url('icomoon/fonts/icomoon.woff?nrd3tp') format('woff'),
+    url('icomoon/fonts/icomoon.svg?nrd3tp#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ninja:before {
+  content: "\e900";
+}
 
 /*# sourceMappingURL=style.css.map */
