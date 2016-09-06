@@ -1,8 +1,9 @@
 console.log('animation test');
 
-function colorSelect(x){
-	x.style.backgroundColor = '#ED5564';
-}
-function colorDeselect(x){
-	x.style.backgroundColor = '#ED5564';
-}
+
+$('.color').click(function(){
+	console.log('click worked');
+});
+// .css('background-color','white');
+// x.style.backgroundColor = '#ED5564';
+

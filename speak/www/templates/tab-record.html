@@ -1,4 +1,4 @@
-<ion-view view-title="Record" class="record-section">
+<ion-view view-title="Record" id="record">
     <ion-content class="padding" scroll='false'>
         <label class="item item-input item-select">
             <div class="input-label">
@@ -24,11 +24,31 @@
             <button class="button button-clear button-positive icon-left ion-play btn-play" ng-disabled="recordFileNames == 0 || status === 'RECORDING'" ng-class="{'button-positive': status == 'playing'}" style="" ng-click="playback()">Play</button>
         </div>
         <center>
+<!--         <div class='row'>
+            <div class='col-33'>
+                <div class='save'></div>
+            </div>
+            <div class='col-33'>
+                <div class='ninja-slider'>
+                    <div class='antena'></div>
+                    <div class='head'>
+                        <div class='face'>
+                            <div class='container-eyes'>
+                                <div class='eye'></div>
+                                <div class='eye'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='col-33'>
+                
+            </div>
+        </div> -->
+
             <div class="row row-bottom record-file">
                 <div class="col">
-                    <button class="button button-block button-light " ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}">
-                        <!--<div class="ion-archive"></div>-->Save
-                    </button>
+                    <button class="button button-block button-light " ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}">Save</button>
                 </div>
                 <div class="col button-decor-wrapper">
                     <div class="row">
@@ -44,8 +64,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <button class="button button-block button-light" ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}">
-                        <!-- <div class="ion-trash-b"> </div>-->Delete</button>
+                    <button class="button button-block button-light" ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}">Delete</button>
                 </div>
             </div>
         </center>
