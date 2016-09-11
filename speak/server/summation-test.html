@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+<title>Summary Tester</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script type="text/javascript" src="summation.js"></script>
+</head>
+<body>
+<div ng-controller="SummationController">
+     Title: <input ng-model="title">
+     <br/>
+     Text to Summarize: <input ng-model="original_text">
+     <br/>
+     <button ng-click="summarize()">Summarize</button>
+     <br/><br/><br/>
+     Summary:
+     <br/><br/>
+     {{summary}}
+</div>
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html ng-app>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+    <script type="text/javascript" src="../www/lib/angular/angular.min.js"></script>
+    <link href="../www/lib/ionic/css/ionic.css" rel="stylesheet">
+    --><!--<script src="../www/lib/ionic/js/ionic.bundle.js"></script>-->
+    <!--<script src="../www/lib/ngstorage/ngStorage.min.js"></script>
+    <script src="../www/lib/angularfire/dist/angularfire.min.js"></script>
+    <script src="../www/lib/ngCordova/dist/ng-cordova.js"></script>
+    <script type="text/javascript" src="summation.js"></script>
+</head>
+
+<body>
+    <div ng-app="myApp" ng-controller="SummaryCtrl">
+      {{test}}Title: <input ng-model="title">
+      <br/>
+      Text to Summarize: <input ng-model="original_text">
+      <br/>
+      <button ng-click="summarize()">Summarize</button>
+    </div>
+</body>
+
+</html>
+-->
