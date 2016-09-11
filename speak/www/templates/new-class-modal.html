@@ -1,19 +1,55 @@
-<ion-modal-view>
+<ion-modal-view id='new-class-modal'>
     <ion-header-bar class="bar bar-header bar-positive">
         <h1 class="title">New Class</h1>
         <button class="button button-clear button-primary" ng-click="createClassModal.hide()">Cancel</button>
     </ion-header-bar>
     <ion-content class="padding">
-        <div class="list">
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Class Name</span>
-                <input ng-model="newClass.class" type="text">
+    <div class='content'>
+        
+    </div>
+        <div class="content">
+<!--         <span class="icon-ninja"></span> -->
+            <div class='container-ninja'>
+              <div class='antena'></div>
+              <div class='body'>
+                <div class='face'>
+                  <div class='eye-container'>
+                    <div class='eye'></div>
+                    <div class='eye'></div>
+                  </div>
+                </div>
+                <div class='chest'>
+                  <div class='btn'></div>
+                  <div class='btn'></div>
+                  <div class='btn'></div>
+                </div>
+              </div>
+            </div>
+                <ion-list class="color-container">
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+<!--                     <div class="color"></div>
+                    <div class="color"></div>
+                    <div class="color"></div>
+                    <div class="color"></div>
+                    <div class="color"></div>  -->
+                </ion-list>    
+            <label class="item-input">
+
+                <input ng-model="newClass.class" type="text" placeholder='Class Name' class='class-input'>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Class Description</span>
-                <textarea ng-model="newClass.description" type="text" rows="10"></textarea>
+            <label class="item-input">
+                <input ng-model="newClass.description" type="text" placeholder='Class Details' class='class-input'>
             </label>
-            <button class="button button-full button-positive" ng-click="createClass(newClass)">Create</button>
-        </div>
+
+
+            </div>
+            <div class='row'>
+               <button class="create" ng-click="createClass(newClass)"> <i class='ion-ios-arrow-right'></i></button> 
+            </div>
+            
     </ion-content>
 </ion-modal-view>

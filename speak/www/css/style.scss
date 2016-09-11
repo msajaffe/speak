@@ -1,13 +1,14 @@
-
-$textcolor: #9E9EB6;
-$basecolor:#A7A8C7;
+$textcolor: #2F383F;
+$basecolor:#2F383F;
 $bgcolor: #FFFFFF;
-$iconcolor: #A7A8C7;
+$iconcolor: #2F383F;
+$nin-color: #2F383F;
+$highlight: #48CFC1;
+$border: solid $nin-color 1px;
 @mixin squarebtn($size) {
     height: $size;
     width: $size;
 }
-
 @mixin roundbtn($size) {
     border-radius: 50%;
     width: $size !important;
@@ -22,6 +23,74 @@ $iconcolor: #A7A8C7;
 .title{
     color:$textcolor !important;
 }
+/*///////////////////NINJA START/////////////////////////////*/
+.container-ninja{
+  height:15em; width:15em;
+  @include center-hor();
+  .antena{
+    border:$border;
+    height:1em; width:1em;
+    @include center-hor();
+    @include roundbtn(1.2em);
+    background-color: $nin-color;
+    &:after{
+      display: block; content:'';
+      border:$border;
+      height:0.5em; width:40%;
+      @include center-hor();
+      top:1em;
+      background-color:inherit;
+    }
+  }
+  .body{
+    border:$border;
+    height: 12em; width:10em;
+    @include center-hor();
+    top:0.5em;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    background-color: $nin-color;
+    .face{
+      border:$border;
+      @include center-hor();
+      width:70%; height:4em;
+      top:15%;
+      border-radius:5em 5em 3.8em 3.8em;
+      background-color: white;
+      .eye-container{
+        @include center-hor();
+        width:85%; height: 1.5em;
+        top:30%;
+        .eye{
+          @include roundbtn(1.3em);
+          border:$border;
+          position:relative;
+          background-color: $nin-color;
+          &:nth-child(2){
+            margin-left:auto;
+            top:-1.3em;   //negative value of .eye dimmensions
+          }
+        }
+      }
+    }
+    .chest{
+      width:35%; height:1em;
+      position:relative;
+      top:23%;
+      left:53%;
+      .btn{
+        @include roundbtn(0.6em);
+        position:absolute;
+        background-color:white;
+        &:nth-child(2){left: 33%;}
+        &:nth-child(3){left:66%;}
+      }
+    }
+  }
+}
+/*//////////////////NINJA END///////////////*/
+
 ion-header-bar{
     background-color:$bgcolor !important;
     i{color:$iconcolor !important;}
@@ -29,6 +98,7 @@ ion-header-bar{
 ion-content{
     background-color: $bgcolor !important;
 }
+
 .colored-half{
   background-color: rgba(104,152,229,1);
   background: linear-gradient(to bottom, rgba(104,152,229,1) 0%, rgba(99,146,227,1) 25%, rgba(97,141,224,1) 47%, rgba(86,134,222,1) 72%, rgba(80,127,220,1) 100%);
@@ -88,7 +158,27 @@ ion-content{
 ion-content{
     background: #FFFFFF;   
 }
-.record-file {
+#record{
+.item-select {
+  width: 75%; 
+  @include center-hor();
+  margin-top:1em;;
+  height:2.5em;
+}
+label{
+    padding-left:0;
+}
+select{
+    left:0;
+    max-width:100%;
+    width:100%;
+}
+selected{
+    text-align:left;
+}
+
+
+    .record-file {
    /* width:80%;*/
     padding:1vh 0vh;
     .button {
@@ -137,23 +227,21 @@ ion-content{
         }    
     }
 }
-
 .record-bubble {
     @include center-hor();
     @include roundbtn(14em);
     text-align: center;
-    background-color: transparent !important;
+    background-color: $basecolor !important;
     border-color: white !important;
-    color:white !important;
     box-shadow: 0px 16px 46px 5px rgba(126,129,143,0.81);
     transform:translateY(0.7em);
     
     .ion-android-microphone {
         font-size: 3em;
-        color: $textcolor !important;
+        color: $highlight !important;
     }
     h1 {
-        color: $textcolor !important;
+        color: #dadada !important;
         font-weight: 400;
     }
 }
@@ -162,18 +250,140 @@ ion-content{
     border-radius: 50%;
     background-color: #ECEDFA;
     
+    }
+.container-ninja-rec{
+  width:15em;
+  @include center-hor();
+  margin-top:2.5em;
+  // border:$border;
+  
+}
+.btn, .ninja-slider{
+   display:inline-block;
+   margin:0 0.5em;
+}
+  .btn{
+    @include roundbtn(4em);
+    // border:$border;
+    position:relative;
+    background-color: $nin-color;
+    margin:0;
+    text-align:center;
+    box-shadow: 0em 0.3em 0em lighten($nin-color, 20%);
+    &:active{
+        background-color: lighten($basecolor,20%);
+      box-shadow: 0em 0.1em 0em lighten($nin-color, 20%);
+      top:0.1em;
+    }
+    i{
+        
+        line-height:2.6em;
+        font-size:1.5em;
+        color:white;
+    }
+  }
+.ninja-slider{
+  .antena{
+    @include roundbtn(0.5em);
+    @include center-hor();
+    background-color:$nin-color;
+    &:before{
+      display: block; content:'';
+      height:0.5em; width:45%;
+      @include center-hor();
+      top:0.2em;
+      background-color:inherit;
+    }
+    
+  }
+  .head{
+    width:5em; height:4em;
+    border-radius: 3em 3em 2em 2em;
+    top:0.2em;
+    @include center-hor();
+    background-color:$nin-color;
+    .face{
+      width:3.8em; height:2em;
+      border-radius: 2em;
+      @include center-hor();
+      background-color:white;
+      top:30%;
+      .container-eyes{
+        height:0.7em; width:81%;
+        @include center-hor();
+        top:28%;
+        .eye{
+          @include roundbtn(0.7em);
+          background-color:$nin-color;
+          position:relative;
+          &:nth-child(2){
+            margin-left:auto;
+            top:-0.70em;   //negative value of .eye dimmensions
+          }
+          
+        }
+      }
+    }
+    
+  }
+}
 }
 
+
+
 //ACCOUNT
+
 #account{
-    .button-block{
-        @include center-hor();
-        width:60%;
-        background-color: $basecolor;
-        color: white;
-        border-radius: 5vh;
-        transform: translateY(17vh);
+    .container-ninja{
+        top:2em;
+        transform:scale(0.8);
+        .btn{
+            // background-color:$highlight;
+            animation: btnA 2.5s infinite;
+        }
+        .btn + .btn{
+            animation: btnB 2.5s 0.2s infinite;
+        }
+        .btn + .btn +.btn {
+            animation: btnC 2.5s 0.4s infinite;
+        }
     }
+    .container-btn{
+        // border:solid black 1px;
+        @include center-hor();
+        text-align:center;
+        padding:0 1%;
+        .row{
+            .wrap{
+                width:24%;
+                padding:1%;
+            }
+        }
+        .button{
+            @include roundbtn(4em);
+            @include center-hor();
+            background-color: $basecolor;
+            color: white;   
+            box-shadow: 0em 0.2em 0em lighten($nin-color, 20%);
+            &:active{
+                background-color: lighten($basecolor,20%);
+                box-shadow: 0em 0.1em 0em lighten($nin-color, 20%);
+                top:0.1em;
+            }         
+        }
+    }
+}
+@keyframes btnA{
+    80%{background-color:$highlight;}
+    100%{background-color:white;}
+}
+@keyframes btnB{
+    80%{background-color:#EC5463;}
+    100%{background-color:white;}
+}
+@keyframes btnC{
+    80%{background-color:#FCCE54;}
+    100%{background-color:white;}
 }
 #storage{
     .storage-item{
@@ -226,3 +436,247 @@ ion-content{
         } 
     }
 }
+#welcome {
+    overflow:hidden;
+  background-color: $basecolor !important;
+  .container{
+    width:80%;
+
+    @include center-hor();
+  }
+    .container-ninja{
+        position:absolute;
+        transform:scale(0.6) translateY(-8em);
+        right:0;
+        .eye-container{
+            width:70%;
+        }
+        .eye{
+            animation:eyes 6s linear infinite;
+
+        }
+        .body{
+            border:solid white 2px;
+        }
+        .antena{
+            border:solid white 1px;
+            border-top:solid white 2px;
+            &:after{
+                border-left:solid white 1.5px;
+                border-right: solid white 1.5px;
+                border-bottom: solid white 1.5px;
+            }
+        }
+    }
+   }
+   @keyframes eyes{
+    60%{transform:translate(0em);}
+    70%{transform:translate(-0.7em);}
+    80%{transform:translate(0.7em);}
+    90%{transform:translate(0em);}
+   }
+  #welcome .title {
+    font-size: 3em;
+    text-align: left;
+    line-height: 0em;
+    margin-top:2em;
+    // transform: translatex(1em);
+    color: white !important; }
+  #welcome .list {
+    transform: translateY(2em); }
+  #welcome .welcome-btn, #welcome .signin-fb, #welcome .signin-google, #welcome .signin-linkedin {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1.5em;
+    text-align: center; }
+  #welcome .welcome-btn {
+    background-color: $highlight;
+    width: 60%;
+    transform: translateY(2em);
+    // border:solid $basecolor 1px;
+    color: white;}
+  #welcome .divider {
+    text-align: center;
+    color: #9E9EB6; 
+}
+  #welcome .signin-fb, #welcome .signin-google, #welcome .signin-linkedin {
+    border-radius: 50%;
+    width: 2em !important;
+    height: 2em !important;
+    width: 75%;
+    margin: 0 0.3em; }
+    #welcome .signin-fb i, #welcome .signin-google i, #welcome .signin-linkedin i {
+      font-size: 1.4em; }
+  #welcome .signin-fb {
+    background-color: #3B5998; }
+  #welcome .signin-google {
+    background-color: #DD4B39; }
+  #welcome .signin-linkedin {
+    background-color: #007EE5; }
+  #welcome .social-container {
+    width: 14em;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto; }
+
+#signup-form {
+  width: 100%;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1.3em;
+  background-color: white;
+  padding-top: 2em;
+  border: black solid 1px; }
+  #signup-form .item-input {
+    width: 85%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    border-bottom: solid lighten($basecolor,10%) 1px;
+    margin-top: 1px; }
+    #signup-form .item-input i {
+      color: lighten($basecolor,10%);
+      margin-right: 1em;
+      font-size: 1.05em; }
+#classes .item-content{
+  height:5em;
+  background-color:#42CB6F;
+}
+h2{
+  color:white;
+  font-weight:600;
+  font-size:1.3em;
+  letter-spacing: 1px;
+}
+#classes .add-class-container {
+  position: fixed;
+  left: 75%;
+  top: 80%; }
+  #classes .add-class-container .add-class {
+    border-radius: 50%;
+    width: 3em !important;
+    height: 3em !important;
+    background-color: $basecolor;
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0vh 0.5vh 2vh 0.1vh #b3b3b3; }
+
+#new-class-modal .content {
+  width: 80%;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif !important; 
+    .item-radio{
+        .radio-icon{
+            font-size:23px;
+            padding:3px 9px;
+            color: $basecolor;
+
+        }
+        } 
+
+}
+#new-class-modal .container-ninja {
+  margin:1em auto 1em auto;
+  transform:scale(0.8);
+}
+#new-class-modal .item-input {
+  padding: 0;
+  width:90%;
+  margin:0em auto 0em auto;}
+#new-class-modal input {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  border-bottom: solid lighten($basecolor,40%) 0.1em;
+  margin: 1em 0;
+  padding-bottom: 1.5em;
+  margin-bottom:1em; }
+#new-class-modal ::-webkit-input-placeholder {
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  font-family: 'Open Sans', sans-serif !important;
+  color:lighten($basecolor,40%);
+}
+#new-class-modal .color-container {
+  height: 3.5em;
+  position: relative;
+  margin:1em auto 1em auto; }
+  #new-class-modal .color-container .color {
+    border-radius: 50%;
+    width: 3em !important;
+    height: 3em !important;
+    margin: 0 0.2em;
+    display: inline-block;
+    border-style:solid; border-width:5px;
+    transition: all 0.4s ease-in-out; }
+    #new-class-modal .color-container .color:nth-child(1) {
+      border-color:#ED5564; }
+    #new-class-modal .color-container .color:nth-child(2) {
+      border-color:#EC87BF; }
+    #new-class-modal .color-container .color:nth-child(3) {
+      border-color:#5C9DED; /* #4EC2E7 */}
+    #new-class-modal .color-container .color:nth-child(4) {
+      border-color:#47CEC0;}
+    #new-class-modal .color-container .color:nth-child(5) {
+      border-color:#42CB6F; }
+/*    #new-class-modal .color-container .color:hover {
+      background-color: blue; }*/
+#new-class-modal .create {
+  border-radius: 2em;
+  width: 8em !important;
+  height: 3em !important;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.2em;
+  border: solid $basecolor 0.1em;
+  background-color: transparent; }
+  #new-class-modal .create i {
+    font-size: 2.2em;
+    color: $textcolor;
+    line-height: 1.3em }
+  #new-class-modal .create:hover{
+    background-color: $basecolor;
+  }
+  #new-class-modal .create:hover i{
+    color:white;
+  }
+
+
+
+
+
+@media screen and (max-width: 320px) {
+    #account{
+        .container-btn{
+            .button{
+                @include roundbtn(3.7em);
+            }
+        }
+    }
+    #record{
+        .bubble-outer{
+            transform:scale(0.9);
+        }
+        .container-ninja-rec{
+            margin-top:0em;
+        }
+    }
+}
+@media screen and (min-height: 667px){
+    #account{
+        .container-ninja{
+            margin-top:2em;
+        }
+        .container-btn{
+            margin-top:1em;
+        }
+    }
+}
+
+/*# sourceMappingURL=style.css.map */

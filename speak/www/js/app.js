@@ -61,7 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         views: {
             'tab-record': {
                 templateUrl: 'templates/tab-record.html',
-                controller: 'RecordCtrl'
+                controller: 'Record2Ctrl'
             }
         }
     })

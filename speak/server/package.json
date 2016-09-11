@@ -1,12 +1,14 @@
 {
   "name": "speak-server",
   "version": "0.0.1",
-  "description": "An example module to illustrate the usage of a package.json",
+  "description": "",
   "author": "Sibtain Jafferi msajaffe@uwaterloo.ca",
   "private": true,
   "dependencies": {
     "watson-developer-cloud": "latest",
     "fs-extra": "latest",
+    "googleapis": "latest",
+    "async": "latest",
     "http": "latest",
     "connect": "latest",
     "express": "latest",

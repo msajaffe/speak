@@ -1,0 +1,86 @@
+{
+    "cordova-plugin-file-transfer": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-file-transfer"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-file": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-file"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "org.apache.cordova.speech.speechrecognition": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/macdonst/SpeechRecognitionPlugin",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-media": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-media"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-audio-recorder-api": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-audio-recorder-api"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "ro.martinescu.audio": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/petrica/wav-recorder.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-background-mode": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/katzer/cordova-plugin-background-mode.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "com.ispikit.cordova": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ispikit/ispikit-cordova",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

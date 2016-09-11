@@ -1,3 +1,6 @@
+Send text file as well as compressed sound file
+
+
 Todo(test):
 Higher sampling rate for recordings - DONE (44.1 KHZ)
 FRONTEND
