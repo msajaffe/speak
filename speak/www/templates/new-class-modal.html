@@ -25,17 +25,18 @@
                 </div>
               </div>
             </div>
-<!--             <object data='../img/ninja.svg' type='image/svg+xml'>
-                <img src='../img/ninja.png'/>
-            </object> -->
-                <div class="color-container">
-                    <div onmouseover='colorSelect(this)' onmouseout='colorDeselect(this)' class="color"></div>
+                <ion-list class="color-container">
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
+<!--                     <div class="color"></div>
                     <div class="color"></div>
                     <div class="color"></div>
                     <div class="color"></div>
-                    <div class="color"></div> 
-                </div>    
-<!--             </label> -->
+                    <div class="color"></div>  -->
+                </ion-list>    
             <label class="item-input">
 
                 <input ng-model="newClass.class" type="text" placeholder='Class Name' class='class-input'>
