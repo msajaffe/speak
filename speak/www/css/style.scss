@@ -4,6 +4,11 @@ $bgcolor: #FFFFFF;
 $iconcolor: #2F383F;
 $nin-color: #2F383F;
 $highlight: #48CFC1;
+
+@font-face {
+    font-family: OpenSans;
+    src: url(Open_Sans/OpenSans-Regular.ttf);
+}
 $border: solid $nin-color 1px;
 @mixin squarebtn($size) {
     height: $size;
@@ -23,7 +28,7 @@ $border: solid $nin-color 1px;
 .title{
     color:$textcolor !important;
 }
-/*///////////////////NINJA START/////////////////////////////*/
+/*///////////////////NINJA PEEK A BOO////////////////////////////*/
 .container-ninja{
   height:15em; width:15em;
   @include center-hor();
@@ -89,7 +94,7 @@ $border: solid $nin-color 1px;
     }
   }
 }
-/*//////////////////NINJA END///////////////*/
+/*//////////////////RECORD///////////////*/
 
 ion-header-bar{
     background-color:$bgcolor !important;
@@ -439,6 +444,28 @@ selected{
 #welcome {
     overflow:hidden;
   background-color: $basecolor !important;
+  .tab-nav{
+      transform:translatey(0.8em);
+      height:3.5em;
+      .tab-item{
+        height:3em; 
+        border:solid $highlight 0.1em;
+        line-height:3em;
+        transition:none;
+        span{color:darken($highlight, 10%) !important;}
+        &:nth-child(3){border-top-left-radius:3em; border-bottom-left-radius:3em;}
+        &:nth-child(4){border-top-right-radius:3em; border-bottom-right-radius:3em;}
+
+      }
+      .tab-item-active{
+        background-color:$highlight;
+        margin:0;
+        &:nth-child(3){border-right:none;}
+        &:nth-child(4){border-left:none;}
+        span{color:white !important;}
+      }
+  }
+  .tabs-positive > .tabs, .tabs.tabs-positive{background-image:none;}
   .container{
     width:80%;
 
@@ -446,18 +473,11 @@ selected{
   }
     .container-ninja{
         position:absolute;
-        transform:scale(0.6) translateY(-8em);
-        right:0;
-        .eye-container{
-            width:70%;
-        }
-        .eye{
-            animation:eyes 6s linear infinite;
-
-        }
-        .body{
-            border:solid white 2px;
-        }
+        transform:scale(0.6) translateY(-4em);
+        right:-1em;
+        .eye-container{width:70%;}
+        .eye{animation:eyes 6s linear infinite;}
+        .body{border:solid white 2px;}
         .antena{
             border:solid white 1px;
             border-top:solid white 2px;
@@ -475,15 +495,17 @@ selected{
     80%{transform:translate(0.7em);}
     90%{transform:translate(0em);}
    }
-  #welcome .title {
-    font-size: 3em;
+  #welcome
+   .title {
+    font-family: OpenSans;
+    font-size:3em;
     text-align: left;
-    line-height: 0em;
-    margin-top:2em;
-    // transform: translatex(1em);
-    color: white !important; }
-  #welcome .list {
-    transform: translateY(2em); }
+    line-height: 0.9em;
+    margin-top:1.5em; margin-bottom:0.1em;
+    color: white !important;
+    li{&:nth-child(1){letter-spacing:0.05em;}}
+    }
+  #welcome .list { }
   #welcome .welcome-btn, #welcome .signin-fb, #welcome .signin-google, #welcome .signin-linkedin {
     position: relative;
     margin-left: auto;
@@ -492,10 +514,12 @@ selected{
     text-align: center; }
   #welcome .welcome-btn {
     background-color: $highlight;
-    width: 60%;
-    transform: translateY(2em);
-    // border:solid $basecolor 1px;
-    color: white;}
+    // width: 40%;
+    transform: translateY(9.2em);
+    z-index:9999;
+    color: white;
+    @include roundbtn(4em);
+  }
   #welcome .divider {
     text-align: center;
     color: #9E9EB6; 
@@ -504,7 +528,6 @@ selected{
     border-radius: 50%;
     width: 2em !important;
     height: 2em !important;
-    width: 75%;
     margin: 0 0.3em; }
     #welcome .signin-fb i, #welcome .signin-google i, #welcome .signin-linkedin i {
       font-size: 1.4em; }
@@ -521,14 +544,29 @@ selected{
     margin-right: auto; }
 
 #signup-form {
-  width: 100%;
+  width: 100%; height:19em;
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 1.3em;
   background-color: white;
   padding-top: 2em;
-  border: black solid 1px; }
+  border-radius:1em;
+  .tabs{
+    top:-2em;
+    width:60%; margin:0 auto; position:relative;
+  }
+  .signup, .login{
+    border-radius:1em; 
+    label{
+      &:nth-child(1){
+        margin-top:4.3em;
+      }
+    }
+}
+
+
+
+}
   #signup-form .item-input {
     width: 85%;
     position: relative;
@@ -647,7 +685,21 @@ h2{
     color:white;
   }
 
+//////////////////POPUP/////////////////////
+.popup-buttons{
+  width:60%;
+  position:relative;
+  margin:0 auto;
 
+}
+.popup-buttons .button:last-child{
+  border-radius: 2em;
+  border:#48CFC1 solid 0.1em;
+  color:#48CFC1;
+}
+.popup-container.active .popup{
+  border-radius:0.5em;
+}
 
 
 

@@ -202,13 +202,13 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
         }
       } else {
         var myPopup = $ionicPopup.show({
-          templateUrl: 'templates/alert.html',
-          title: 'Please choose Class',
+          templateUrl: 'templates/alert-save.html',
+          title: 'Please choose a class before you can save!',
           // subTitle: 'Please use normal things',
           scope: $scope,
           buttons: [{
-            text: '<b>Okey!</b>',
-            type: 'button-positive',
+            text: '<span>Got it</span>',
+            type: '',
             onTap: function(e) {}
           }]
         });

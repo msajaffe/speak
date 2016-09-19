@@ -1,9 +1,9 @@
 <ion-view view-title="Classes" id='classes'>
     <ion-content>
         <p>{{message}}</p>
-        <div class="add-class-container">
+<!--         <div class="add-class-container">
             <button class="add-class" ng-click='createClassModal.show()'><i class='ion-plus'></i></button>
-        </div>
+        </div> -->
         <ion-list>
             <ion-item ng-repeat="item in $storage" ng-click='go2Details($index) '>
                 <h2>{{item.class}}</h2>
@@ -30,4 +30,7 @@
         <div ng-repeat-end></div>
 
     </ion-content>
+        <div class="add-class-container">
+            <button class="add-class" ng-click='createClassModal.show()'><i class='ion-plus'></i></button>
+        </div>
 </ion-view>
