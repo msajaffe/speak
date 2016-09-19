@@ -7,6 +7,9 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.ispikit.cordova": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
         "cordova-plugin-audio-recorder-api": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
@@ -23,9 +26,6 @@
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
         "ro.martinescu.audio": {
-            "PACKAGE_NAME": "com.ionicframework.speak787788"
-        },
-        "com.ispikit.cordova": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         }
     },

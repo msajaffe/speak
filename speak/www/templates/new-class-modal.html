@@ -1,55 +1,45 @@
 <ion-modal-view id='new-class-modal'>
     <ion-header-bar class="bar bar-header">
         <h1 class="title">New Class</h1>
-        <button class="button button-clear button-primary" ng-click="createClassModal.hide()"style='margin-right:0.6em;'><i class='ion-close-round'></i></button>
+        <button class="button button-clear button-primary" ng-click="createClassModal.hide()" style='margin-right:0.6em;'><i class='ion-close-round'></i></button>
     </ion-header-bar>
     <ion-content class="padding">
-    <div class='content'>
-        
-    </div>
+        <div class='content'>
+        </div>
         <div class="content">
-<!--         <span class="icon-ninja"></span> -->
+            <!--         <span class="icon-ninja"></span> -->
             <div class='container-ninja'>
-              <div class='antena'></div>
-              <div class='body'>
-                <div class='face'>
-                  <div class='eye-container'>
-                    <div class='eye'></div>
-                    <div class='eye'></div>
-                  </div>
+                <div class='antena'></div>
+                <div class='body'>
+                    <div class='face'>
+                        <div class='eye-container'>
+                            <div class='eye'></div>
+                            <div class='eye'></div>
+                        </div>
+                    </div>
+                    <div class='chest'>
+                        <div class='btn'></div>
+                        <div class='btn'></div>
+                        <div class='btn'></div>
+                    </div>
                 </div>
-                <div class='chest'>
-                  <div class='btn'></div>
-                  <div class='btn'></div>
-                  <div class='btn'></div>
-                </div>
-              </div>
             </div>
-                <ion-list class="color-container">
-                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
-                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
-                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
-                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
-                    <ion-radio ng-model="choice" ng-value="'A'" class='color'></ion-radio>
-<!--                     <div class="color"></div>
-                    <div class="color"></div>
-                    <div class="color"></div>
-                    <div class="color"></div>
-                    <div class="color"></div>  -->
-                </ion-list>    
+            <ion-list class="color-container" ng-init='newClass.color=4'>
+                <ion-radio ng-model="newClass.color" ng-value="0" class='color'></ion-radio>
+                <ion-radio ng-model="newClass.color" ng-value="1" class='color'></ion-radio>
+                <ion-radio ng-model="newClass.color" ng-value="2" class='color'></ion-radio>
+                <ion-radio ng-model="newClass.color" ng-value="3" class='color'></ion-radio>
+                <ion-radio ng-model="newClass.color" ng-value="4" class='color'></ion-radio>
+            </ion-list>
             <label class="item-input">
-
                 <input ng-model="newClass.class" type="text" placeholder='Class Name' class='class-input'>
             </label>
             <label class="item-input">
                 <input ng-model="newClass.description" type="text" placeholder='Class Details' class='class-input'>
             </label>
-
-
-            </div>
-            <div class='row'>
-               <button class="create" ng-click="createClass(newClass)"> <i class='ion-ios-arrow-right'></i></button> 
-            </div>
-            
+        </div>
+        <div class='row'>
+            <button class="create" ng-click="createClass(newClass)"> <i class='ion-ios-arrow-right'></i></button>
+        </div>
     </ion-content>
 </ion-modal-view>

@@ -1,74 +1,72 @@
-<ion-view view-title="Welcome" >
+<ion-view hide-nav-bar="true" view-title="Welcome">
     <ion-content class="padding" id="welcome">
         {{message}}
         <div class='container'>
             <div class='container-ninja'>
-              <div class='antena'></div>
-              <div class='body'>
-                <div class='face'>
-                  <div class='eye-container'>
-                    <div class='eye'></div>
-                    <div class='eye'></div>
-                  </div>
+                <div class='antena'></div>
+                <div class='body'>
+                    <div class='face'>
+                        <div class='eye-container'>
+                            <div class='eye'></div>
+                            <div class='eye'></div>
+                        </div>
+                    </div>
+                    <div class='chest'>
+                        <div class='btn'></div>
+                        <div class='btn'></div>
+                        <div class='btn'></div>
+                    </div>
                 </div>
-                <div class='chest'>
-                  <div class='btn'></div>
-                  <div class='btn'></div>
-                  <div class='btn'></div>
-                </div>
-              </div>
             </div>
             <ul class='title'>
                 <li>NOTE</li>
                 <li>JUTSU</li>
             </ul>
-        <div class="list">
-            <div id="signup-form">
-<ion-tabs class="tabs-positive">
-
-  <ion-tab title="SIGN UP">
-    <div class="signup">
-        <label class="item item-input">
-           <i class="ion-android-mail"></i>
-              <input ng-model="newUser.email" type="email" placeholder="Enter email">
-        </label>
-        <label class="item item-input">
-            <i class="ion-locked"></i>
-                <input ng-model="newUser.password" type="password" placeholder="Enter password">
-        </label>
-        <label class="item item-input">
-            <i class="ion-locked"></i>
-                <input ng-model="newUser.password1" type="password" placeholder="Re-type password">
-        </label>
-    </div>
-  </ion-tab>
-         <ion-tab title="LOGIN">
-                <div class="login">
-                    <label class="item item-input">
-                        <i class="ion-android-mail"></i>
-                        <input ng-model="newUser.email" type="email" placeholder="Enter email">
-                    </label>
-                    <label class="item item-input">
-                        <i class="ion-locked"></i>
-                        <input ng-model="newUser.password" type="password" placeholder="Enter password">
-                    </label>
+            <div class="list">
+                <div id="signup-form">
+                    <ion-tabs class="tabs-positive">
+                        <ion-tab title="SIGN UP">
+                            <div class="signup">
+                                <label class="item item-input">
+                                    <i class="ion-android-mail"></i>
+                                    <input ng-model="newUser.email" type="email" placeholder="Enter email">
+                                </label>
+                                <label class="item item-input">
+                                    <i class="ion-locked"></i>
+                                    <input ng-model="newUser.password" type="password" placeholder="Enter password">
+                                </label>
+                                <label class="item item-input">
+                                    <i class="ion-locked"></i>
+                                    <input ng-model="newUser.password1" type="password" placeholder="Re-type password">
+                                </label>
+                            </div>
+                        </ion-tab>
+                        <ion-tab title="LOGIN">
+                            <div class="login">
+                                <label class="item item-input">
+                                    <i class="ion-android-mail"></i>
+                                    <input ng-model="newUser.email" type="email" placeholder="Enter email">
+                                </label>
+                                <label class="item item-input">
+                                    <i class="ion-locked"></i>
+                                    <input ng-model="newUser.password" type="password" placeholder="Enter password">
+                                </label>
+                            </div>
+                        </ion-tab>
+                    </ion-tabs>
+                    <button class="button button-full button-positive welcome-btn signup-btn" ng-click="createUser(newUser)"><i class='ion-chevron-right'></i> </button>
                 </div>
-        </ion-tab>
-</ion-tabs>
-           <button class="button button-full button-positive welcome-btn signup-btn" ng-click="createUser(newUser)"><i class='ion-chevron-right'></i> </button>    
-            </div>
-
-            <br><br><br>
-            
-            <div class="social-container">
-                <div class="divider">YOU CAN ALSO SIGN UP WITH</div>
                 <br>
-                <button class="button button-positive signin-fb" ng-click="signinEmail(newUser)"><i class="ion-social-facebook"></i></button>
-                <button class="button button-positive signin-google" ng-click="signinEmail(newUser)"><i class="ion-social-googleplus"></i> </button>
-                <button class="button button-positive signin-linkedin" ng-click="signinEmail(newUser)"><i class="ion-social-dropbox"></i></button>                
+                <br>
+                <br>
+                <div class="social-container">
+                    <div class="divider">YOU CAN ALSO SIGN UP WITH</div>
+                    <br>
+                    <button class="button button-positive signin-fb" ng-click="signinEmail(newUser)"><i class="ion-social-facebook"></i></button>
+                    <button class="button button-positive signin-google" ng-click="signinEmail(newUser)"><i class="ion-social-googleplus"></i> </button>
+                    <button class="button button-positive signin-linkedin" ng-click="signinEmail(newUser)"><i class="ion-social-dropbox"></i></button>
+                </div>
             </div>
-        </div>    
         </div>
- 
     </ion-content>
 </ion-view>
