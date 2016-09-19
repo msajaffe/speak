@@ -385,7 +385,7 @@ angular.module('starter.controllers', [])
 
     var service = {};
 
-    var colors = [
+    service.colors = [
         { code: '#ED5564' },
         { code: '#EC87BF' },
         { code: '#5C9DED' },
