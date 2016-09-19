@@ -22,22 +22,6 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
   var savePath;
   var fs = null;
 
-  // This starts recording. We first need to get the id of the grammar to use
-  $scope.startRecording = function() {
-    console.log($scope.recognizer)
-    if (recorder && recorder.start(0)) {
-
-    }
-  }
-  // This starts recording. We first need to get the id of the grammar to use
-  $scope.startRecording = function() {
-    console.log($scope.recognizer)
-    if (recorder && recorder.start(0)) {
-      if (!$scope.keywordIndicator.style) $scope.keywordIndicator.style = {display: 'block'};
-      else $scope.keywordIndicator.style.display = 'block';
-    }
-  }
-
   $scope.toggleRecord = function() {
     $scope.soundRecorder = LectureService;
     console.log($scope.soundRecorder);
@@ -113,7 +97,19 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
               $scope.status = "INITIALIZING";
               var params = {fileUrl: fileURL, fileEntry: fileEntry};
               $scope.soundRecorder.Set(params);
-              $scope.soundRecorder.SetupFilters(self);
+              if (navigator) {
+                        navigator.getUserMedia = (navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
+                      }
+              var self = this;
+              navigator.getUserMedia({audio:true},
+                $scope.soundRecorder.setupFilters,
+                function (err) {
+                  console.log("Error getting user media: " + err);
+                  self.useAudioContextApi = false;
+                });
               $scope.status = "READY";
             if (typeof callback === 'function') {
               callback();
@@ -296,27 +292,9 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
       };
 
       $scope.getStatus = function(){
-        return "LectureService.status";
+        return LectureService.status;
       };
 
-      if (navigator) {
-                navigator.getUserMedia = (navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia);
-              }
-      var self = this;
-      navigator.getUserMedia({audio:true},
-        function(){
-          return function (){
-        //    LectureService.SetupFilters(self);
-            $scope.status = $scope.getStatus();
-          };
-        },
-        function (err) {
-          console.log("Error getting user media: " + err);
-          self.useAudioContextApi = false;
-        });
       }
     ])
 
