@@ -25,7 +25,7 @@
             <div class="list">
                 <div id="signup-form">
                     <ion-tabs class="tabs-positive">
-                        <ion-tab title="SIGN UP">
+                        <ion-tab title="SIGN UP" on-select="active = 0">
                             <div class="signup">
                                 <label class="item item-input">
                                     <i class="ion-android-mail"></i>
@@ -41,7 +41,7 @@
                                 </label>
                             </div>
                         </ion-tab>
-                        <ion-tab title="LOGIN">
+                        <ion-tab title="LOGIN" on-select="active = 1">
                             <div class="login">
                                 <label class="item item-input">
                                     <i class="ion-android-mail"></i>
@@ -54,7 +54,7 @@
                             </div>
                         </ion-tab>
                     </ion-tabs>
-                    <button class="button button-full button-positive welcome-btn signup-btn" ng-click="createUser(newUser)"><i class='ion-chevron-right'></i> </button>
+                    <button class="button button-full button-positive welcome-btn signup-btn" ng-click="signupsignin(newUser,active)"><i class='ion-chevron-right'></i> </button>
                 </div>
                 <br>
                 <br>
@@ -62,9 +62,9 @@
                 <div class="social-container">
                     <div class="divider">YOU CAN ALSO SIGN UP WITH</div>
                     <br>
-                    <button class="button button-positive signin-fb" ng-click="signinEmail(newUser)"><i class="ion-social-facebook"></i></button>
-                    <button class="button button-positive signin-google" ng-click="signinEmail(newUser)"><i class="ion-social-googleplus"></i> </button>
-                    <button class="button button-positive signin-linkedin" ng-click="signinEmail(newUser)"><i class="ion-social-dropbox"></i></button>
+                    <button class="button button-positive signin-fb" ng-click="signin('facebook')"><i class="ion-social-facebook"></i></button>
+                    <button class="button button-positive signin-google" ng-click="signin('google')"><i class="ion-social-googleplus"></i> </button>
+                    <button class="button button-positive signin-linkedin" ng-click="signin('linkedin')"><i class="ion-social-dropbox"></i></button>
                 </div>
             </div>
         </div>
