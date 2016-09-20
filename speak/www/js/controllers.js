@@ -303,8 +303,12 @@ angular.module('starter.controllers', [])
 
     var initMedia = function(url) {
         var my_media = new Media(url,
-            function() {},
-            function() {},
+            function() {
+                console.log('in success')
+            },
+            function(MediaError) {
+                console.log(MediaError)
+            },
             function(status) {
                 $scope.state = status;
                 if (status == 4 && $scope.media.INDEX) {
@@ -450,24 +454,34 @@ angular.module('starter.controllers', [])
 .controller('welcomeCtrl', function($scope, $state, navigationFactory, authFactory, $ionicPlatform) {
     //  $scope.go2 = navigationFactory.go2;
 
+    $scope.newUser = {};
+    $scope.active = 0;
 
+    $scope.signin = function(method) {
+        console.log('signin in with ' + method)
+    }
 
-    $scope.createUser = function(userInfo) {
+    $scope.signupsignin = function(userInfo, active) {
+        if (active == 1) {
+            createUser(userInfo);
+        } else {
+            signinEmail(userInfo);
+        }
+    }
+
+    var createUser = function(userInfo) {
         if (userInfo.password === userInfo.password1)
             authFactory.createUser(userInfo);
         else $scope.message = 'please check your credentials.'
     }
 
-    $scope.signinEmail = function(userInfo) {
-        $state.go('tab.record');
-        /*
+    var signinEmail = function(userInfo) {
         authFactory.signinEmail(userInfo).then(function(res) {
             if (res.message) {
                 $scope.message = res.message;
             }
 
         });
-        */
     }
 
 })
