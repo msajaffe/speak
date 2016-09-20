@@ -27,6 +27,9 @@
         },
         "ro.martinescu.audio": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
         }
     },
     "dependent_plugins": {
