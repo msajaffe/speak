@@ -577,7 +577,8 @@ angular.module('starter.services', [])
 
     service.signinEmail = function(userInfo) {
         var deferred = $q.defer();
-        firebase.auth().signInWithEmailAndPassword(userInfo.email, userInfo.password)
+        firebase
+            .auth().signInWithEmailAndPassword(userInfo.email, userInfo.password)
             .then(function() {
                 deferred.resolve(true);
             })
@@ -614,12 +615,53 @@ angular.module('starter.services', [])
     })
 
     service.signinFacebook = function() {
+
+        // if the person is just signing in.
         $cordovaFacebook.login(["public_profile", "email", "user_friends"])
             .then(function(success) {
-                console.log(sucess);
+                console.log(success.authResponse.accessToken);
+                var credential = firebase.auth.FacebookAuthProvider.credential(success.authResponse.accessToken);
+                firebase.auth().signInWithCredential(credential).catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    // The email of the user's account used.
+                    var email = error.email;
+                    // The firebase.auth.AuthCredential type that was used.
+                    var credential = error.credential;
+
+                });
             }, function(error) {
                 console.log(error);
             });
+
+        // if the person is already signed in.
+        /*
+        $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+        .then(function(success) {
+            console.log(success.authResponse.accessToken);
+            var credential = firebase.auth.FacebookAuthProvider.credential(success.authResponse.accessToken);
+            firebase.auth().signInWithCredential(credential).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+
+                if (email)
+                    firebase.auth().currentUser.link(credential).then(function(user) {
+                        console.log("Account linking success", user);
+                    }, function(error) {
+                        console.log("Account linking error", error);
+                    });
+                // ...
+            });
+        }, function(error) {
+            console.log(error);
+        });
+        */
     }
 
 
