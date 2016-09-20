@@ -8,3 +8,5 @@ cordova plugin add https://github.com/petrica/wav-recorder.git
 cordova plugin add https://github.com/katzer/cordova-plugin-background-mode.git
 # for Web Audio API on some phones
 cordova plugin add cordova-plugin-crosswalk-webview
+cordova plugin add cordova-plugin-whitelist
+cordova plugin add https://github.com/Wizcorp/phonegap-facebook-plugin.git --variable APP_ID="1140282442725006" --variable APP_NAME="Notejutsu"

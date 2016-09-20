@@ -459,6 +459,7 @@ angular.module('starter.controllers', [])
 
     $scope.signin = function(method) {
         console.log('signin in with ' + method)
+        if (method == 'facebook') { authFactory.signinFacebook(); }
     }
 
     $scope.signupsignin = function(userInfo, active) {
