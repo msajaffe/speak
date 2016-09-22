@@ -385,7 +385,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.service('utilitiesService', function() {
+.service('utilitiesService', function(facebookProfileService) {
 
     var service = {};
 
@@ -397,11 +397,18 @@ angular.module('starter.controllers', [])
         { code: '#42CB6F' }
     ]
 
+
     return service;
 
 })
 
-.controller('ClassesListCtrl', function($ionicModal, $scope, $state, $localStorage, dataFactory, mediaFactory, $filter, utilitiesService) {
+.controller('ClassesListCtrl', function(facebookProfileService, $ionicModal, $scope, $state, $localStorage, dataFactory, mediaFactory, $filter, utilitiesService) {
+
+    // facebook tests
+    $scope.facebookPost = function() {
+        facebookProfileService.facebookPost();
+    }
+
 
     $scope.$storage = $localStorage.classes;
     $scope.files = $localStorage.audioFiles;
