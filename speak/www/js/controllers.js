@@ -61,9 +61,7 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
       }
 /*
       for (var i = event.resultIndex; i < event.results.length; ++i) {
-        $scope.final_transcript += event.results[i][0].transcript;
-
-
+          
         if (event.results[i].isFinal) {
           $scope.final_transcript += event.results[i][0].transcript;
         } else {
