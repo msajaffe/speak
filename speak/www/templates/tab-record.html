@@ -1,9 +1,9 @@
 <ion-view view-title="Record" id="record">
     <ion-content class="padding" scroll='false'>
         <label class="item item-input item-select">
-<!--             <div class="input-label">
+            <div class="input-label">
                 Class
-            </div> -->
+            </div>
             <select ng-model='classOption'>
                 <option ng-repeat='item in $storage'>{{item.class}}</option>
             </select>
@@ -29,25 +29,26 @@
 </div>
             </div>
         </div>
-                <div class='container-ninja-rec'>
-                    <div class='btn' ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}"><i class='ion-checkmark-round'></i></div>
-                    <div class='ninja-slider'>
-                        <div class='antena'></div>
-                        <div class='head'>
-                            <div class='face'>
-                                <div class='container-eyes'>
-                                    <div class='eye'></div>
-                                    <div class='eye'></div>
-                                </div>
-                            </div>
+
+        <div class='container-ninja-rec'>
+            <div class='btn' ng-click="save(classOption)" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}"><i class='ion-checkmark-round'></i></div>
+            <div class='ninja-slider'>
+                <div class='antena'></div>
+                <div class='head'>
+                    <div class='face'>
+                        <div class='container-eyes'>
+                            <div class='eye'></div>
+                            <div class='eye'></div>
                         </div>
-                    </div>
-                    <div class='btn' ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}"><i class='ion-close-round' ></i></div>
+                    </div>]
                 </div>
-       <div class="col text-center">
+            </div>
+            <div class='btn' ng-click="clear()" ng-disabled="recordFileNames == 0 || status === 'saving'" ng-class="{'button-assertive': status == 'deleting'}"><i class='ion-close-round'></i></div>
+        </div>
+        <div class="col text-center">
             <button class="button button-clear button-positive icon-left ion-play btn-play" ng-disabled="recordFileNames == 0 || status === 'RECORDING'" ng-class="{'button-positive': status == 'playing'}" style="" ng-click="playback()">Play</button>
         </div>
-<!--             <div class="row row-bottom record-file">
+        <!--             <div class="row row-bottom record-file">
                 <div class="col">
                     <button class="button button-block button-light " ng-click="save()" ng-disabled="recordFileNames == 0 || status === 'deleting'" ng-class="{'button-balanced': status == 'saving'}">Save</button>
                 </div>

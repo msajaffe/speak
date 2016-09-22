@@ -1,5 +1,9 @@
 'use strict';
 
+var express = require('express');
+var fileUpload = require('express-fileupload');
+var app = express();
+
 // [START app]
 // [START import_libraries]
 var google = require('googleapis');
@@ -88,16 +92,27 @@ function main (inputFile, callback) {
   ], callback);
 }
 
-// [START run_application]
-if (module === require.main) {
-  if (process.argv.length < 3) {
-    console.log('Usage: node recognize <inputFile>');
-    process.exit();
-  }
-  var inputFile = process.argv[2];
-  main(inputFile, console.log);
-}
-// [END run_application]
-// [END app]
+// default options
+app.use(fileUpload());
 
-exports.main = main;
+app.post('/upload', function(req, res) {
+	if (!req.files) {
+		res.send('No files were uploaded.');
+		return;
+	}
+	var file = req.files.files;
+  var uploadPath = __dirname + '/uploads/' + file.name;
+  console.log(uploadPath);
+	file.mv(uploadPath, function(err) {
+		if (err) {
+      console.log(err)
+			res.status(500).send(err);
+		}
+		else {
+      var audio = fs.createReadStream(uploadPath);
+      console.log(audio);
+      main(audio, console.log);
+		}
+	});
+});
+app.listen(process.env.PORT || 3000);
