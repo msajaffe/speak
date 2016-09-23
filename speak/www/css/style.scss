@@ -368,7 +368,6 @@ ion-content {
 //ACCOUNT
 #account {
     .container-ninja {
-        top: 2em;
         transform: scale(0.8);
         .btn {
             // background-color:$highlight;
@@ -381,6 +380,25 @@ ion-content {
             animation: btnC 2.5s 0.4s infinite;
         }
     }
+    .list{
+        width:90%;
+        margin:0 auto;
+    }
+    .item-note{
+        float:left;
+    }
+    .item-divider, .item{
+        border-left:none;
+        border-right:none;
+    }
+    .item-divider{
+        background-color:white;
+        color:darken($highlight,10%);
+        border-top:none;
+        border-bottom: darken($highlight,10%) solid 0.15em;
+    }
+    .icon{color:$nin-color;}
+
     .container-btn {
         // border:solid black 1px;
         @include center-hor();
@@ -586,8 +604,6 @@ ion-content {
     }
 }
 
-#welcome .list {}
-
 #welcome .welcome-btn,
 #welcome .signin-fb,
 #welcome .signin-google,
@@ -616,16 +632,19 @@ ion-content {
 #welcome .signin-fb,
 #welcome .signin-google,
 #welcome .signin-linkedin {
-    border-radius: 50%;
-    width: 2em !important;
+    border-radius: 2em;
+    width: 100% !important;
     height: 2em !important;
     margin: 0 0.3em;
+    line-height:2em;
 }
 
 #welcome .signin-fb i,
 #welcome .signin-google i,
 #welcome .signin-linkedin i {
     font-size: 1.4em;
+    padding-bottom:0.2em;
+    margin-right:0.5em;
 }
 
 #welcome .signin-fb {
@@ -641,7 +660,7 @@ ion-content {
 }
 
 #welcome .social-container {
-    width: 14em;
+    width: 16em;
     position: relative;
     margin-left: auto;
     margin-right: auto;
