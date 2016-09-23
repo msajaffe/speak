@@ -1,3 +1,212 @@
+
+  $scope.playback = function() {
+    function playMedia(index) {
+      playAudio($scope.recordFileNames[index].fileURL,
+        function(index) {
+          return function() {
+            if (index != $scope.recordingNum) playMedia(index + 1);
+            else {
+              $scope.status = "STOPPED";
+              return;
+            }
+          };
+        }(index),
+        function(error) {
+          console.log(error);
+        });
+      }
+      // stop();
+      playMedia(0);
+    }
+
+    function createRecordFile(fileName, callback) {
+      var type = window.PERSISTENT;
+      var size = 5 * 1024 * 1024;
+      window.requestFileSystem(type, size, createFileHelper(fileName), errorCallback);
+
+      function createFileHelper(fileName) {
+        return function successCallback(fs) {
+          //savePath = fs.root.name;
+          fs.root.getFile(fileName, { create: true, exclusive: true }, function(fileEntry) {
+            console.log(fileEntry)
+            console.log('File creation successfull!')
+            var fileURL = "/" + fileEntry.nativeURL.split('///')[1];
+            $scope.recordFileNames.push({ fileName: fileName, fileURL: fileURL, create_at: new Date().getTime() });
+            console.log(fileEntry.nativeURL.split('///')[1]);
+              $scope.status = "INITIALIZING";
+            /*  var params = {fileUrl: fileURL, fileEntry: fileEntry};
+              $scope.soundRecorder.Set(params);
+              if (navigator) {
+                        navigator.getUserMedia = (navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
+                      }
+              var self = this;
+              navigator.getUserMedia({audio:true},
+                $scope.soundRecorder.setupFilters,
+                function (err) {
+                  console.log("Error getting user media: " + err);
+                  self.useAudioContextApi = false;
+                });*/
+              $scope.status = "READY";
+            if (typeof callback === 'function') {
+              callback();
+            }
+          }, errorCallback);
+        };
+      }
+
+      function errorCallback(error) {
+        console.log(error);
+        alert("ERROR: " + error.code)
+      }
+    }
+
+    $scope.clear = function() {
+      var count = 0;
+      $scope.status = "DELETING";
+      //DELETE ALL FILES, RESET VARIABLES
+      for (var i = 0; i < $scope.recordFileNames.length; i++) {
+        var fileDir = $scope.recordFileNames[i].fileURL.split(recordingID)[0];
+        console.log(fileDir);
+        console.log($scope.recordFileNames[i].fileName);
+        $cordovaFile.removeFile(fileDir, $scope.recordFileNames[i].fileName)
+        .then(function(result) {
+          console.log('Success: deleting audio file' + JSON.stringify(result));
+          count++;
+          if (count === $scope.recordFileNames.length) {
+            $scope.recordFileNames.length = 0;
+            count = 0;
+            $scope.textContent = "00:00:00";
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            $scope.recordingNum = 0;
+            $scope.status = "STOPPED";
+          }
+        }, function(err) {
+          console.log('Error: deleting audio file' + JSON.stringify(err));
+        });
+      }
+    }
+
+    $scope.save = function(classOption) {
+
+      if (classOption) {
+        var CLASS;
+        for (var key in $scope.$storage) {
+          var name = $scope.$storage[key].class;
+          if (name === classOption)
+          CLASS = key;
+        }
+
+        stop();
+
+        var count = 0;
+        $scope.status = "SAVING";
+
+        function send(index) {
+          var options = { fileKey: "files", fileName: $scope.recordFileNames[index].fileName, mimeType: 'audio/wav', params: { lectureid: recordingID, current: index, total: $scope.recordingNum }, httpMethod: "POST" };
+          console.log(options);
+          $cordovaFileTransfer.upload('https://boiling-inlet-4790.herokuapp.com/upload', $scope.recordFileNames[index].fileURL, options)
+          .then(function(result) {
+            alert(JSON.stringify(result));
+            count++;
+            if (count === $scope.recordFileNames.length) {
+              $scope.status = "STOPPED";
+            }
+            // Success!
+          }, function(err) {
+            console.log(err)
+            count++;
+            if (count === $scope.recordFileNames.length) {
+              $scope.status = "STOPPED";
+            }
+            // Error
+          }, function(progress) {
+            console.log(progress)
+            // constant progress updates
+          });
+        }
+
+        for (var i = 0; i < $scope.recordFileNames.length; i++) {
+          // send to the server
+          send(i);
+          $scope.$storage[CLASS].parts.push($scope.recordFileNames[i]);
+        }
+      } else {
+        var myPopup = $ionicPopup.show({
+          templateUrl: 'templates/alert.html',
+          title: 'Please choose Class',
+          // subTitle: 'Please use normal things',
+          scope: $scope,
+          buttons: [{
+            text: '<b>Okey!</b>',
+            type: 'button-positive',
+            onTap: function(e) {}
+          }]
+        });
+      }
+    }
+
+    function playAudio(url, successCallback, errorCallback) {
+      // playback using AudioContext API with possible sound enhancement
+      var contextClass = (window.AudioContext ||
+        window.webkitAudioContext ||
+        window.mozAudioContext ||
+        window.oAudioContext ||
+        window.msAudioContext);
+        if (contextClass) {
+          console.log("Web Audio API (Audio Context) is available.");
+
+          // Web Audio API is available.
+          var context = new contextClass();
+          var source = context.createBufferSource();
+          var request = new XMLHttpRequest();
+          request.open('GET', url, true);
+          request.responseType = 'arraybuffer';
+          request.onload = function(){
+            console.log("onLoad of: " + url);
+            context.decodeAudioData(request.response, function(buffer) {
+              source.buffer = buffer;
+            }, null);
+          }
+          request.send();
+          source.connect(context.destination);
+          source.start(0);
+
+
+        } else {
+          // Web Audio API (AudioContext) is not available
+          console.log("Web Audio API (AudioContext) is not available.  Use Media to play back.");
+
+          // Play the audio file at url
+          var my_media = new Media(url, successCallback, errorCallback);
+          my_media.play();
+        }
+      }
+
+      function onStatusChange() {}
+
+      function onSuccess() {}
+
+      function onError(err) {
+        console.log(err);
+        if (typeof err.message != 'undefined')
+        err = err.message;
+        alert("Error : " + err);
+      }
+
+      function log(message) {
+        console.info(message);
+      }
+
+
+
+
+
+
 angular.module('starter.controllers', [])
 
 

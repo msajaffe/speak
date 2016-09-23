@@ -22,18 +22,18 @@
         "cordova-plugin-media": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
-        "org.apache.cordova.speech.speechrecognition": {
-            "PACKAGE_NAME": "com.ionicframework.speak787788"
-        },
-        "ro.martinescu.audio": {
-            "PACKAGE_NAME": "com.ionicframework.speak787788"
-        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         },
+        "org.apache.cordova.speech.speechrecognition": {
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
         "phonegap-facebook-plugin": {
-            "APP_ID": "1140282442725006",
-            "APP_NAME": "Notejutsu",
+            "APP_ID": "my-app-id",
+            "APP_NAME": "my-app-name",
+            "PACKAGE_NAME": "com.ionicframework.speak787788"
+        },
+        "ro.martinescu.audio": {
             "PACKAGE_NAME": "com.ionicframework.speak787788"
         }
     },
