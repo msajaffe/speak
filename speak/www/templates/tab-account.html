@@ -1,8 +1,5 @@
 <ion-view view-title="Account">
-    <ion-content id="account">
-        <!--<div class="row">
-                <button class="button button-block" ng-click="go2Settings()">Settings</button>
-        </div>-->     
+    <ion-content id="account">  
             <div class='container-ninja'>
               <div class='antena'></div>
               <div class='body'>
@@ -19,48 +16,45 @@
                 </div>
               </div>
             </div>
-            <div class='container-btn'>
-              <div class="row">
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class="button button-block" ng-click="go2FileStorage()"><i class='ion-android-cloud-outline'></i></button>
-                  </div>
-                  <div class='row'><span>STORAGE</span></div>
-                </div>
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class="button button-block" ng-click="go2manageAccounts()"><i class='ion-android-settings'></i> </button>
-                  </div>
-                  <div class='row'><span>SETTINGS</span></div>
-                </div>
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class='button button-block'><i class='ion-android-person-add' ></i></button>
-                  </div>
-                  <div class='row'><span>INVITE FRIENDS</span></div>
-                </div>
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class="button button-block" ng-click='signout()'><i class='ion-power'></i></button>
-                  </div>
-                  <div class='row'><span>SIGN OUT</span></div>
-                </div>
-              </div>
+<div class="list">
+  <div class="item item-divider">MY ACCOUNT</div>
+      <a class="item">
+        Email <br>
+        <span class='item-note'>email@email.com</span>
+    </a>
+    <a class="item">
+      Change Password
+  </a>
+  <div class="item item-divider">STORAGE</div>
+    <a class="item">
+        Device Storage
+    </a>
+    <a class="item">
+        SD Card
+    </a>
+  <div class="item item-divider">INVITE FRIENDS</div>
+    <a class="item item-icon-left">
+      <i class="icon ion-social-facebook"></i>
+        Invite Friends on Facebook
+    </a>
+    <a class="item item-icon-left">
+      <i class="icon ion-ios-email-outline"></i>
+        Invite by Email
+    </a>    
+  <div class="item item-divider">SETTINGS</div>
+    <a class="item ">
+      Help
+  </a>
+    <a class="item ">
+      Terms of Service
+  </a>
+  <a class="item item-icon-right">
+    <i class="icon ion-power"></i>
+    Sign Out
+  </a>
+  <li></li>
 
-<!--               <div class="row">
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class='button button-block'><i class='ion-android-person-add' ></i></button>
-                  </div>
-                  <div class='row'><span>INVITE FRIENDS</span></div>
-                </div>
-                <div class='wrap'>
-                  <div class='row'>
-                    <button class="button button-block" ng-click='signout()'><i class='ion-power'></i></button>
-                  </div>
-                  <div class='row'><span>SIGN OUT</span></div>
-                </div>
-              </div>  -->            
-            </div>
+
+</div>
     </ion-content>
 </ion-view>
