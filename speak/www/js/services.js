@@ -52,124 +52,6 @@ angular.module('starter.services', [])
         // console.log(buffer);
     }
 
-    function postRecognizerJob(message, callback) {
-
-        var msg = message || {};
-
-        if (self.callbackManager) {
-            msg.callbackId = self.callbackManager.add(callback);
-        }
-
-        if (self.recognizer) {
-            self.recognizer.postMessage(msg);
-        }
-
-    }
-
-    function feedGrammar(g, index, id) {
-
-        if (index < g.length) {
-
-            postRecognizerJob({
-                command: 'addGrammar',
-                data: g[index].g
-            }, function(id) {
-                feedGrammar(grammars, index + 1, {
-                    id: id
-                });
-            });
-
-        } else {
-            recognizerReady = true;
-        }
-    }
-
-    var wordList = [
-        ["ONE", "W AH N"],
-        ["TWO", "T UW"],
-        ["THREE", "TH R IY"],
-        ["FOUR", "F AO R"],
-        ["FIVE", "F AY V"],
-        ["SIX", "S IH K S"],
-        ["SEVEN", "S EH V AH N"],
-        ["EIGHT", "EY T"],
-        ["NINE", "N AY N"],
-        ["ZERO", "Z IH R OW"],
-        ["NEW-YORK", "N UW Y AO R K"],
-        ["NEW-YORK-CITY", "N UW Y AO R K S IH T IY"],
-        ["PARIS", "P AE R IH S"],
-        ["PARIS(2)", "P EH R IH S"],
-        ["SHANGHAI", "SH AE NG HH AY"],
-        ["SAN-FRANCISCO", "S AE N F R AE N S IH S K OW"],
-        ["LONDON", "L AH N D AH N"],
-        ["BERLIN", "B ER L IH N"],
-        ["SUCKS", "S AH K S"],
-        ["ROCKS", "R AA K S"],
-        ["IS", "IH Z"],
-        ["NOT", "N AA T"],
-        ["GOOD", "G IH D"],
-        ["GOOD(2)", "G UH D"],
-        ["GREAT", "G R EY T"],
-        ["WINDOWS", "W IH N D OW Z"],
-        ["LINUX", "L IH N AH K S"],
-        ["UNIX", "Y UW N IH K S"],
-        ["MAC", "M AE K"],
-        ["AND", "AE N D"],
-        ["AND(2)", "AH N D"],
-        ["O", "OW"],
-        ["S", "EH S"],
-        ["X", "EH K S"]
-    ];
-
-    var grammars = [{
-        g: {
-            numStates: 1,
-            start: 0,
-            end: 0,
-            transitions: [{
-                from: 0,
-                to: 0,
-                word: "ONE"
-            }, {
-                from: 0,
-                to: 0,
-                word: "TWO"
-            }, {
-                from: 0,
-                to: 0,
-                word: "THREE"
-            }, {
-                from: 0,
-                to: 0,
-                word: "FOUR"
-            }, {
-                from: 0,
-                to: 0,
-                word: "FIVE"
-            }, {
-                from: 0,
-                to: 0,
-                word: "SIX"
-            }, {
-                from: 0,
-                to: 0,
-                word: "SEVEN"
-            }, {
-                from: 0,
-                to: 0,
-                word: "EIGHT"
-            }, {
-                from: 0,
-                to: 0,
-                word: "NINE"
-            }, {
-                from: 0,
-                to: 0,
-                word: "ZERO"
-            }]
-        }
-    }];
-
     return {
         getTranscription: function(callback) {
             $http({
@@ -210,6 +92,7 @@ angular.module('starter.services', [])
                 // use the AudioContextApi
                 function buffersCallback(buffers) {
                     // encode as WAV and save to file
+                    console.log(buffer);
                     self.recorder.exportWAV(saveSoundFile);
                 }
 
@@ -266,8 +149,6 @@ angular.module('starter.services', [])
                     navigator.mozGetUserMedia ||
                     navigator.msGetUserMedia);
             }
-            self.recognizer = new Worker("js/pocketsphinx-web/recognizer.js");
-            self.callbackManager = new CallbackManager();
             if (self.useMartinescu !== true && contextClass && navigator && navigator.getUserMedia) {
                 // sound manipulation filters for input stream
                 console.log("Web Audio API (Audio Context) is available.");
@@ -316,79 +197,8 @@ angular.module('starter.services', [])
                 var output = context.createMediaStreamSource(dest.stream);
                 self.recorder = new AudioRecorder(output, config);
 
-                if (self.recognizer) {
-                    console.log("RECOGNISER IS GUCCI")
-                    self.recorder.consumers = [self.recognizer];
-                }
                 console.log("Recorder started successfully.");
                 self.status = "READY";
-
-
-                self.recognizer.onmessage = function() {
-
-                    // I need this nested event listener because the first time a message is triggered we need to trigger other things that we never need to trigger again
-                    self.recognizer.onmessage = function(e) {
-
-                        // if an id to be used with the callback manager
-                        // this is needed to start the listening
-                        if (e.data.hasOwnProperty('id')) {
-
-                            var data = {};
-
-                            if (e.data.hasOwnProperty('data')) {
-                                data = e.data.data;
-                            }
-
-                            var callback = self.callbackManager.get(e.data['id']);
-
-                            if (callback) {
-                                callback(data);
-                            }
-
-                        }
-
-                        // if a new hypothesis has been created
-                        if (e.data.hasOwnProperty('hyp')) {
-
-                            var hypothesis = e.data.hyp;
-
-                            console.log(hypothesis);
-
-
-                        }
-
-                        // if an error occured
-                        if (e.data.hasOwnProperty('status') && (e.data.status == "error")) {
-
-                        }
-
-                    };
-
-                    // Once the worker is fully loaded, we can call the initialize function
-                    // You can pass parameters to the recognizer, such as : {command: 'initialize', data: [["-hmm", "my_model"], ["-fwdflat", "no"]]}
-                    postRecognizerJob({
-                        command: 'initialize'
-                    }, function() {
-
-                        if (self.recorder) {
-                            self.recorder.consumers = [self.recognizer];
-                        }
-
-                        postRecognizerJob({
-                            command: 'addWords',
-                            data: wordList
-                        }, function() {
-                            feedGrammar(grammars, 0);
-
-                            //    startRecording();
-
-                        });
-
-                    });
-
-                };
-
-                self.recognizer.postMessage('');
 
             } else {
                 if (self.useMartinescu) {
