@@ -16,6 +16,7 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
   $scope.cordova = {};
   $scope.recordFileNames = [];
   $scope.transcription = "";
+  $scope.summary = "";
   var recordingID = GUID.get()
   var recorder;
   var mediaVar = null;
@@ -48,7 +49,9 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
         LectureService.downloadTranscript(jobId, function(response){
           if (response.status == 404) download(time*5, jobId);
           else if (response.status == 200) {
-            $scope.transcription = getTranscriptionFromResponse(response);
+            //save transcription with lecture ID in class
+            $scope.transcription = getTranscriptionFromResponse(response.data);
+            $scope.summary = LectureService.summarizeLecture($scope.transcription);
           }
         });
       },
@@ -57,6 +60,8 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
   }
 
   $scope.toggleRecord = function() {
+    //var lol = "Wednesday, a Kremlin spokesman said the document was a fabrication and total nonsense. Spokesman Dmitry Peskov said Russia had no compromising material on President-elect Donald Trump or his opponent, Hillary Clinton, and that the document was a hoax intended to further damage U.S.-Russian relations. Trump has scheduled a news conference for Wednesday — his first since one in July in which he quipped that Russia should hack materials related to his Democratic opponent, Hillary Clinton. The alleged intelligence document appears likely to dominate the upcoming session. NPR is not detailing the contents of the brief because it remains unverified, but it describes a concerted effort by Russian President Vladimir Putin to cultivate a relationship with Trump and his camp. The document, which describes information provided by Russian government and other sources, details behavior by Trump that could leave him open to blackmail, as well as alleged secret meetings between Trump aides and Russian officials called to discuss the campaign against Clinton and potential new business relationships.";
+    //console.log(LectureService.summarizeLecture(lol));
     if ($scope.recording) {
       $timeout.cancel(t);
       recorder.stop();
