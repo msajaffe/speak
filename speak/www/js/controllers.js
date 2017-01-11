@@ -6,22 +6,21 @@ angular.module('starter.controllers', [])
 function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia, GUID, $cordovaFile, $cordovaFileTransfer, dataFactory, $localStorage, LectureService) {
 
   $scope.$storage = $localStorage.classes;
-  $scope.textContent = "00:00:00";
-  $scope.recordingNum = -1; //NUMBER OF RECORDINGS IN ONE LECTURE
-  $scope.cordova = {};
-  $scope.recordFileNames = [];
-  $scope.soundRecorder;
-  $scope.recording = 'start';
-  $scope.status = "INITIALIZING"
+
   var seconds = 0;
   var minutes = 0;
   var hours = 0;
   var t;
+  $scope.textContent = "00:00:00";
+  $scope.recordingNum = -1; //NUMBER OF RECORDINGS IN ONE LECTURE
+  $scope.cordova = {};
+  $scope.recordFileNames = [];
+  $scope.transcription = "";
   var recordingID = GUID.get()
+  var recorder;
   var mediaVar = null;
   var savePath;
   var fs = null;
-  $scope.recognizedText = '';
 
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
@@ -34,98 +33,79 @@ function($ionicPopup, $scope, $interval, $timeout, $ionicPlatform, $cordovaMedia
     }
   };
 
-  $scope.recorder = function () {
-    var recognition = new webkitSpeechRecognition();
-    var recording = false;
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.onend = function() {  console.log("CAS onend");
-    recording = false;
-    //  recognition.stop();
-    //  if (!recording) return;
-    //  recognition.start();
-  };
-  recognition.onerror 		= function() {  console.log("CAS onerror");   	};
-  recognition.onstart = function(){ recording = true; }
-  recognition.onresult = function(event) {
-    console.log(event);
-    $scope.interim_transcript = '';
-    if (typeof(event.results) == 'undefined') {
-      recognition.onend = null;
-      recognition.stop();
-      upgrade();
-      return;
+  function getTranscriptionFromResponse(response) {
+    var words = response.words;
+    var transcript = "";
+    for (var word in words){
+      transcript += word.name + " ";
     }
-    if (event.results.length > 0) {
-      $scope.final_transcript = event.results[0][0].transcript;
-      $scope.safeApply();
-    }
+    return transcript;
+  }
 
-    for (var i = event.resultIndex; i < event.results.length; ++i) {
-      console.log(event.results[i])
-      if (event.results[i].final) {
-        $scope.final_transcript += event.results[i][0].transcript;
-      } else {
-        $scope.interim_transcript += event.results[i][0].transcript;
-      }
-      $scope.safeApply();
-    }
-  };
+  function download(time, jobId) {
+    $timeout(
+      function () {
+        LectureService.downloadTranscript(jobId, function(response){
+          if (response.status == 404) download(time*5, jobId);
+          else if (response.status == 200) {
+            $scope.transcription = getTranscriptionFromResponse(response);
+          }
+        });
+      },
+      time
+    );
+  }
 
-  recognition.audiostart = function(event) {
-    console.log(event);
-  };
-
-  return {
-    record : function() {
-      console.log("I GOT HERE")
-      recording = true;
-      recognition.start();
-    },
-    stopRecord : function() {
-      recording = false;
-      recognition.stop();
-    }
-  };
-};
-
-$scope.toggleRecord = function() {
-  //  $scope.soundRecorder = LectureService;
-  if ($scope.recording === 'start') {
-    $scope.soundRecorder = $scope.LectureService;
-    navigator.getUserMedia({audio:true},
-      $scope.soundRecorder.SetupFilters,
-      function (err) {
-        console.log("Error getting user media: " + err);
-        $scope.soundRecorder.useAudioContextApi = false;
-      });
-      $scope.recording = false;
-    }
+  $scope.toggleRecord = function() {
     if ($scope.recording) {
       $timeout.cancel(t);
-      //$scope.soundRecorder.stopRecord();
-      if ($scope.soundRecorder) $scope.soundRecorder.Stop();
-      //else console.log("RECORDING FAILED")
+      recorder.stop();
+      recorder.release();
+      $scope.status = "STOPPED";
+
+      LectureService.transcribe($scope.recordFileNames[$scope.recordingNum].fileURL,
+        $scope.recordFileNames[$scope.recordingNum].fileName,
+        function(jobId) {
+          //callback should send the transcription to summarization library
+          download(1000, jobId);
+        });
+
+        /*
+        LectureService.downloadTranscript("1439532", function(transcription){
+        $scope.transcription = transcription;
+      });*/
     } else {
-      console.log("NIGGER");
-      var fileName = recordingID + '-' + $scope.recordingNum + ".wav";
       $scope.recordingNum++;
-      //  $scope.soundRecorder.record();
-      createRecordFile(fileName,
-        function() {
+      var fileName = recordingID + '-' + $scope.recordingNum + ".wav";
+      createRecordFile(fileName, function() {
+        $timeout(function() {
           timer();
-          if ($scope.status == "READY") $scope.soundRecorder.Record(); //$scope.soundRecorder.Record();
-          else console.log("RECORDING FAILED")
-        }
-      );
+        }, 100);
+        recorder.record();
+      });
     }
     $scope.recording = !$scope.recording;
+  }
+
+  function audioRecordCallback() {
+    return function(mediaStatus, error) {
+      if (martinescu.Recorder.STATUS_ERROR == mediaStatus) {
+        console.log(error);
+      }
+      $scope.status = mediaStatus
+      console.log(mediaStatus);
+    };
+  }
+
+  // buffer callback
+  var bufferCallback = function(buffer) {
+    //  console.log(buffer);
   }
 
   function createRecordFile(fileName, callback) {
     var type = window.PERSISTENT;
     var size = 5 * 1024 * 1024;
-    window.requestFileSystem(type, size, createFileHelper(fileName), errorCallback);
+    window.requestFileSystem(type, size, createFileHelper(fileName), errorCallback)
 
     function createFileHelper(fileName) {
       return function successCallback(fs) {
@@ -134,20 +114,11 @@ $scope.toggleRecord = function() {
           console.log(fileEntry)
           console.log('File creation successfull!')
           var fileURL = "/" + fileEntry.nativeURL.split('///')[1];
+          //var fileURL = "/" + fileName;
+          console.log(fileURL)
           $scope.recordFileNames.push({ fileName: fileName, fileURL: fileURL, create_at: new Date().getTime() });
           console.log(fileEntry.nativeURL.split('///')[1]);
-          if ($scope.soundRecorder && $scope.soundRecorder.UsingWebAudioApi()) {
-            // When using AudioContext, only need to create it once.
-            $scope.status = "INITIALIZING";
-            var params = {fileUrl: fileURL, fileEntry: fileEntry};
-            $scope.soundRecorder.Set(params);
-            $scope.status = "READY";
-          } else {
-            var options = {fileUrl: fileURL, fileEntry: fileEntry};
-            // uncomment this line if you want to use Martinescu library
-            //options.useMartinescu = true;
-            $scope.soundRecorder.Set(options);
-          }
+          recorder = new martinescu.Recorder(fileURL, { sampleRate: 44100 }, audioRecordCallback(), bufferCallback);
           if (typeof callback === 'function') {
             callback();
           }
@@ -169,40 +140,68 @@ $scope.toggleRecord = function() {
       title: 'Speak it up!',
       text: 'Doing heavy tasks.'
     });
-
+    /*
     // Enable background mode
     cordova.plugins.backgroundMode.enable();
     // Called when background mode has been activated
     cordova.plugins.backgroundMode.onactivate = function() {
-      cordova.plugins.backgroundMode.configure({
-        text: $scope.status
-      });
+    cordova.plugins.backgroundMode.configure({
+    text: $scope.status
+    });
     }
+    */
   }, false);
 
-  function add() {
-    seconds++;
-    if (seconds >= 60) {
-      seconds = 0;
-      minutes++;
-      if (minutes >= 60) {
-        minutes = 0;
-        hours++;
+  $scope.playback = function() {
+    function playMedia(index) {
+      playAudio($scope.recordFileNames[index].fileURL,
+        function(index) {
+          return function() {
+            if (index != $scope.recordingNum) playMedia(index + 1);
+            else $scope.status = "STOPPED";
+          };
+        }(index),
+        function(error) {
+          console.log(error);
+        });
       }
+      // stop();
+      playMedia(0);
     }
-    $scope.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
-    timer();
+
+    function playAudio(url, successCallback, errorCallback) {
+      // Play the audio file at url
+      var my_media = new Media(url,
+        successCallback,
+        errorCallback
+      );
+      // Play audio
+      my_media.play();
+    }
+
+    function add() {
+      seconds++;
+      if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+          minutes = 0;
+          hours++;
+        }
+      }
+      $scope.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+      timer();
+    }
+
+    function timer() {
+      t = $timeout(add, 1000);
+    }
+
+    $scope.getStatus = function(){
+      return $scope.status;
+    };
+
   }
-
-  function timer() {
-    t = $timeout(add, 1000);
-  }
-
-  $scope.getStatus = function(){
-    return $scope.status;
-  };
-
-}
 ])
 
 .controller('ClassesDetailsCtrl', function($scope, $localStorage, $stateParams, dataFactory, mediaFactory, $ionicModal) {

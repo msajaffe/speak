@@ -12,6 +12,7 @@
     "http": "latest",
     "connect": "latest",
     "express": "latest",
-    "express-fileupload": "latest"
+    "express-fileupload": "latest",
+    "wordpos" : "latest"
   }
 }
